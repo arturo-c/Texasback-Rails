@@ -1,0 +1,14 @@
+<p class="submit">			
+	<span class="controls">
+		<% unless enable_publish %>
+			<%= tag "input", :type => 'button', :value => 'Revert to Published Version', :disabled => true if show_revert %>			
+			<%= tag "input", :type => 'button', :value => 'Publish', :disabled => true %>		
+		<% else %>
+			<%= form.submit 'Revert to Published Version', :id => 'revert_to_published', :name => 'revert_to_published', :confirm => 'Are you sure you want to revert to the published version?  Any changes you have made to this page will be lost.' if show_revert  %>
+			<%= form.submit 'Publish', :id => 'publish', :name => 'publish', :confirm => 'Are you sure you want to publish this content?' %>
+		<% end %>	
+	</span>
+	
+	<%= form.submit 'Save' %> 
+	<%= form.submit 'Save and Preview', :id => 'save_and_preview', :name => 'save_and_preview' %>
+</p>

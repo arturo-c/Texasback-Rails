@@ -1,0 +1,9 @@
+<%= render :partial => 'about_pages/sidebar' %>
+
+<h2>	
+	Our Doctors and Staff
+	
+	<%= link_to 'View All', doctors_list_path, :class => 'backlink' %>
+</h2>
+
+<%= render :partial => 'doctor', :locals => { :doctor => @doctor, :version => @doctor.published } %>

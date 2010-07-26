@@ -1,0 +1,10 @@
+if @topic.new_record?
+  page.alert 'The topic could not be added.  Please enter a topic name and try again.'    
+  page[:new_topic_name].activate
+else
+  page.insert_html :before, :add_topic_link_row, :partial => 'admin/event_topics/topic', :locals => { :topic => @topic }
+  page.visual_effect :highlight, "event_topic_#{@topic.id}"
+  page << "$('new_topic_name').value = '';"
+end
+
+page[:add_topic_field_row].down('span.controls').show().next('span.loading').hide()

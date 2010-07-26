@@ -1,0 +1,16 @@
+<% content_for :sidebar do %>
+	<%= render :partial => 'admin/utility/side_nav' %>
+<% end %>
+
+<h1>Locations</h1>
+	
+<h2>You will need:</h2>
+	
+<ul class="bullets">
+	<li>Location Addresses</li>
+	<li>Mapquest link for each location</li>
+	<li>Meta Data</li>
+</ul>
+	
+<p><%= link_to 'Edit Locations', edit_content_path('locations') %></p>
+

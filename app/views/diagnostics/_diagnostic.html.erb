@@ -1,0 +1,33 @@
+<h2><%= h diagnostic.name %></h2>
+
+<% unless version.description.blank? %>
+	<h3 class="tight">Description</h3>
+
+	<%= rich_format version.description %>
+<% end %>
+
+<% unless version.conditions_evaluated.blank? %>
+	<h3 class="tight">Conditions Evaluated</h3>
+
+	<%= rich_format version.conditions_evaluated %>
+<% end %>
+
+<% unless version.before_procedure.blank? %>
+	<h3 class="tight">Before the Procedure</h3>
+
+	<%= rich_format version.before_procedure %>
+<% end %>
+
+<% unless version.during_procedure.blank? %>
+	<h3 class="tight">During the Procedure</h3>
+
+	<%= rich_format version.during_procedure %>
+<% end %>
+
+<% unless version.after_procedure.blank? %>
+	<h3 class="tight">After the Procedure</h3>
+
+	<%= rich_format version.after_procedure %>
+<% end %>
+
+<p class="top"><a href="/conditions">Back to Conditions</a></p>

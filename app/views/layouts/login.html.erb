@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+		
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Texas Back Institute: Site Administration</title>
+		<%= stylesheet_link_tag "reset", "layout", "page", :cache => true %>		
+		<%= javascript_include_tag 'prototype' %>
+		<%= yield :head %>
+	</head>
+	<body>
+		<div id="wrapper">
+			<div id="login_wrapper">
+				<div id="logo">
+					<%= link_to(image_tag('/images/admin_logo.jpg', :alt => 'Texas Back Institute'), admin_path, :class => 'logo' ) %>
+					<div class="app_title">Website Administration</div>
+				</div>				
+				<% if flash[:notice] %>
+					<div id="confirm">
+						<%= flash[:notice] %>
+					</div>
+				<% end %>
+				<% if flash[:error] %>
+					<div id="error">
+						<%= flash[:error] %>
+					</div>
+				<% end %>
+				
+				<%= yield %>
+			</div>
+		</div>
+	</body>
+</html>

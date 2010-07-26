@@ -1,0 +1,12 @@
+<%
+if @abstract
+	checked = @abstract.topic_ids.include?(topic.id)
+else
+	checked = false
+end
+%>
+
+<li id="research_topic_<%= topic.id %>">
+		<%= check_box_tag 'abstract[topic_ids][]', topic.id, checked, :id => "topic_#{topic.id}" %>
+		<%= label_tag "topic_#{topic.id}", h(topic.name) %>	
+</li>

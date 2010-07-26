@@ -1,0 +1,15 @@
+First Name: <%= @contact.first_name %>
+Last Name: <%= @contact.last_name %>
+
+Address:
+<%= @contact.address1 %><%= "\n#{@contact.address2}" unless @contact.address2.blank? %>
+<%= @contact.city %>, <%= @contact.state %> <%= @contact.zip %>
+
+E-mail Address: <%= @contact.email %>
+Phone Number: <%= @contact.phone %>
+
+How did you hear about us?
+<%= @contact.how_did_you_hear %>
+
+Question or Comment:
+<%= @contact.question %>

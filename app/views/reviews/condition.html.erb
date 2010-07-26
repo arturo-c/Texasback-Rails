@@ -1,0 +1,21 @@
+<h2><%= h @condition.name %> Testimonials</h2>
+
+<% if @condition.has_published_reviews? %>
+	<% if @condition.published_reviews.length > 1 %>
+		<ul>
+			<% @condition.published_reviews.each do |review| %>
+				<li><a href="#<%= review.slug %>"><%= h review.name %></a></li>
+			<% end %>
+		</ul>
+	<% end %>
+	
+	<% @condition.published_reviews.each do |review| %>	
+		<h3 id="<%= review.slug %>"><%= h review.name %></h3>
+		
+		<%= rich_format review.published.full_description %>
+		
+		<p class="top"><a href="#">Back to top</a></p>
+	<% end %>
+<% else %>
+	<p>There are no testimonials for this condition yet. <%= link_to 'Return to all testimonials', testimonials_list_path %></p>
+<% end %>

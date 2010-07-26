@@ -1,0 +1,127 @@
+<% content_for :head do %>
+	<script type="text/javascript">
+	$(function() {
+		$('#doctor_headers').click(function(event) {
+			var element = $(event.target);
+			
+			if(element.attr('nodeName') == 'A') {
+				var id = element.attr('id').split('_')[1];
+				
+				$('#doctor_headers a').each(function() {
+					var item = $(this);					
+					(item.attr('id').indexOf(id) > 0) ? item.addClass('selected') : item.removeClass('selected');
+				});
+				
+				$('div.sortby').each(function() {
+					var item = $(this);					
+					(item.attr('id').indexOf(id) > 0) ? item.show() : item.hide();
+				});
+				
+				element.blur();
+				
+				return false;
+			}
+		});
+	});
+	</script>
+<% end %>
+
+<%= render :partial => 'about_pages/sidebar' %>
+
+<%= rich_format @doctors_page.part_content('body') %>
+
+<p id="doctor_headers">
+	<strong>Results sorted by: </strong>
+	
+	<a href="#" class="selected" id="toggle_specialty">Specialty</a>
+	|
+	<a href="#" id="toggle_location">Location</a>
+	|
+	<a href="#" id="toggle_name">Last Name</a>
+	|
+	<a href="#" id="toggle_tenure">Tenure</a>
+</p>
+
+<div id="sortby_specialty" class="sortby">
+	<h2>Find a Specialist</h2>
+	
+	<ul>
+		<% @teams.each do |team| %>
+			<li><%= link_to h(team.name), "#t#{team.id}" %></li>
+		<% end %>
+	</ul>
+	
+	<% @teams.each do |team| %>
+		<h2 id="t<%= team.id %>"><%= h(team.name) %></h2>
+		
+		<div class="mini_bios">
+			<% team.doctors.each do |doctor| %>
+				<%= render :partial => 'mini_profile', :locals => { :doctor => doctor, :version => doctor.published } %>
+			<% end %>
+		</div>
+		
+		<p class="top"><a href="#">Back to top</a></p>
+	<% end %>
+</div>
+
+<div id="sortby_location" class="sortby" style="display:none;">
+	<h2>Find a Specialist by Location</h2>
+	
+	<div id="map_team_locations">
+		<div id="texas_locations">
+			<h3>Texas</h3>
+			
+			<ul>
+				<% @texas.each do |location| %>
+					<li><%= link_to h(location.name), "#l#{location.id}" %></li>
+				<% end %>				
+			</ul>
+		</div>
+		<div id="arizona_locations">		
+			<h3>Arizona</h3>
+			
+			<ul>
+				<% @zona.each do |location| %>
+					<li><%= link_to h(location.name), "#l#{location.id}" %></li>
+				<% end %>				
+			</ul>
+		</div>
+		<div class="clear"></div>
+	</div>
+	
+	<% @locations.each do |location| %>
+		<h2 id="l<%= location.id %>"><%= h location.name %></h2>
+		
+		<% if location.doctors.size > 0 %>
+			<div class="mini_bios">
+				<% location.doctors.each do |doctor| %>
+					<%= render :partial => 'mini_profile', :locals => { :doctor => doctor, :version => doctor.published } %>
+				<% end %>
+			</div>
+		<% else %>
+			<p>There are currently no specialists practicing at this location.</p>
+		<% end %>
+		
+		<p class="top"><a href="#">Back to top</a></p>
+	<% end %>
+</div>
+
+<div id="sortby_name" class="sortby" style="display:none;">
+	<h2>Find a Specialist By Last Name</h2>
+	
+	<div class="mini_bios">
+		<% @doctors_by_name.each do |doctor| %>
+			<%= render :partial => 'mini_profile', :locals => { :doctor => doctor, :version => doctor.published } %>
+		<% end %>
+	</div>
+</div>
+
+<div id="sortby_tenure" class="sortby" style="display:none;">
+	<h2>Find a Specialist By Tenure</h2>
+	
+	<div class="mini_bios">
+		<% @doctors_by_tenure.each do |doctor| %>
+			<%= render :partial => 'mini_profile', :locals => { :doctor => doctor, :version => doctor.published } %>
+		<% end %>
+	</div>
+</div>

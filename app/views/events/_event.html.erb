@@ -1,0 +1,36 @@
+<h2><%= h @event.name %></h2>
+
+<dl class="no_indent">
+	<dt>Date &amp; Time:</dt>
+	<dd><%= @event.event_date.to_formatted_s(:long_with_time) %></dd>
+	
+	<% unless @version.location.blank? %>
+		<dt>Location:</dt>
+		<dd><%= h @version.location %></dd>
+	<% end %>
+	
+	<% if @event.topics.length > 0 %>
+		<dt><%= pluralize(@event.topics.length, "Topic") %>:</dt>
+		<dd><%= @event.topics.collect(&:name).to_sentence %></dd>
+	<% end %>
+	
+	<% unless @version.presenter.blank? %>
+		<dt>Presenter:</dt>
+		<dd><%= h @version.presenter %></dd>
+	<% end %>
+	
+	<% unless @version.full_description.blank? %>
+		<dt>Description:</dt>
+		<dd><%= rich_format @version.full_description %></dd>		
+	<% end %>
+</dl>
+
+<% if @version.has_images? %>
+	<% @version.images.each do |image| %>
+		<% content_tag_for(:div, image) do %>
+			<%= image_tag(image.public_filename(:cropped), :alt => h(image.caption)) %>
+		<% end %>
+	<% end %>
+<% end %>
+
+<p><%= link_to 'Back to Events', events_list_path %></p>

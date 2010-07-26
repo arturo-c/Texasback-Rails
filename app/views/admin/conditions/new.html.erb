@@ -1,0 +1,25 @@
+<% content_for :head do %>
+	<%= javascript_include_tag '/_js/jquery.min.js', '/_js/jquery.fancybox.js', '/_js/jquery.pngFix.pack.js' %>
+
+	<script type="text/javascript">
+	jQuery.noConflict();
+
+	jQuery(document).ready(function($){
+		$('div.condition_image a.image').each(function() {
+			$(this).fancybox();
+		});
+	});
+	
+	document.observe('dom:loaded', function() {
+		new NewOrEditConditionPage();
+	});
+	</script>
+<% end %>
+
+<div id="breadcrumbs">
+	<%= link_to 'Home', admin_path %> &gt; <%= link_to 'Conditions', conditions_path %> &gt; Add a New Condition
+</div>
+
+<h1>Add a New Condition</h1>
+
+<%= render :partial => 'form' %>

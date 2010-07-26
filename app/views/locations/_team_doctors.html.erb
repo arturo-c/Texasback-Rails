@@ -1,0 +1,18 @@
+<a href="#" onclick="tb_remove(); return false;" class="popup_close_link"><span>Close</span></a>
+
+<div class="mini_bios">
+	<h2>
+		<%= h @team.name %>
+		<% if @location %>
+			<span class="practicing_note">Practicing in <%= h @location.name_and_state %></span>
+		<% end %>		
+	</h2>
+	
+	<% if @doctors.size > 0 %>
+		<% @doctors.each do |doctor| %>
+			<%= render :partial => 'doctors/mini_profile', :locals => { :doctor => doctor, :version => doctor.published } %>
+		<% end %>
+	<% else %>
+		<p>There are no <%= h @team.name %> specialists at this location.</p>
+	<% end %>
+</div>

@@ -1,0 +1,23 @@
+<%= render :partial => 'admin/utility/preview_bar', :locals => { 
+																		:preview_path => "http://texasback.com/conditions",
+																		:button_link => edit_content_diagnostics_path } %>
+
+<%= render :partial => 'conditions/sidebar' %>
+
+<% content_for :head do %>	
+	<script type="text/javascript">
+	document.documentElement.className = 'js';
+	</script>
+<% end %>
+
+<%= render :partial => 'conditions/index_content' %>
+
+<%= rich_format @conditions_page.part_content('body') %>
+
+<%= rich_format @version.body_content %>
+
+<ul>
+	<% @diagnostics.each do |d| %>
+		<li><%= link_to(h(d.name), view_diagnostic_path(:slug => d.slug)) %></li>	
+	<% end %>
+</ul>

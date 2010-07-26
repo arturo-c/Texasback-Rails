@@ -1,0 +1,95 @@
+<%= show_errors_for :review %>
+
+<% form_for @review, :url => (@review.new_record? ? testimonials_path : testimonial_path(:id => @review.id)) do |r| %>
+	<% fields_for "review[draft_version_attributes]", @version do |v| %>
+		<div class="left_half" style="width:65%;">
+			<div class="left_half">
+				<dl class="form">
+					<dt><%= r.label :first_name, 'First Name' %></dt>
+					<dd><%= r.text_field :first_name, :size => 37, :maxlength => 250 %></dd>				
+				</dl>
+			</div>
+			<div class="right_half">
+				<dl class="form">
+					<dt><%= r.label :last_name, 'Last Name' %></dt>
+					<dd><%= r.text_field :last_name, :size => 37, :maxlength => 250 %></dd>				
+				</dl>
+			</div>
+			<div class="clear"></div>
+			<input type="hidden" id="full_name" name="full_name" value="" />
+
+			<p><%= r.label :slug, 'URL:' %> http://texasback.com/testimonials/<%= r.text_field :slug, :maxlength => 40, :size => 20 %></p>	
+	
+			<dl class="form">
+				<dt><%= v.label :short_description, 'Short Description' %></dt>
+				<dd><%= v.text_area :short_description, :cols => 60, :rows => 10, :class => 'full' %></dd>
+			
+				<dt><%= v.label :full_description, 'Long Description' %></dt>
+				<dd><%= v.rich_text :full_description %></dd>
+			</dl>
+		</div>
+		<div class="right_half" style="width:32%">
+			<p><strong>Patient Condition(s) treated at Texas Back Institute</strong> Choose all that apply</p>
+			
+			<ul class="check_list">
+				<% @conditions.each do |condition| %>
+					<li>
+							<%= check_box_tag 'review[condition_ids][]', condition.id, @review.condition_ids.include?(condition.id), :id => "review_#{condition.id}" %>
+							<%= label_tag "review_#{condition.id}", h(condition.name) %>
+					</li>
+				<% end %>
+			</ul>
+		</div>
+		
+		<div class="clear"></div>
+		
+			<p><strong>Patient Treatment(s) used at Texas Back Institute</strong> Choose all that apply</p>
+			
+			<div id="treatments_picker" style="margin-bottom:20px;">
+				<div class="headers">
+					<% @types.each_with_index do |type, index| %>
+						<a href="#" id="treatmentheader_<%= type.id %>"<%= ' class="selected"' if index == 0 %>><%= h type.clean_name %></a>
+					<% end %>
+				</div>
+				
+				<% @types.each_with_index do |type, index| %>
+					<div class="types" id="treatmentblock_<%= type.id %>"<%= ' style="display:none;"' unless index == 0 %>>										
+						<% if type.all_published_treatments.length > 10 %>
+							<div class="left_half">
+						<% end %>
+																
+						<ul class="check_list">
+							<% type.all_published_treatments.each_with_index do |treatment, index| %>
+								<% unless index >= 20 %>
+								
+									<% if index == 10 %>
+										</ul></div><div class="right_half"><ul class="check_list">
+									<% end %>
+									
+									<li>
+										<%= check_box_tag 'review[treatment_ids][]', treatment.id, @review.treatment_ids.include?(treatment.id), :id => "treatment_#{treatment.id}" %>
+										<%= label_tag "treatment_#{treatment.id}", h(treatment.name) %>
+									</li>
+								<% end %>
+							<% end %>											
+						<% if type.all_published_treatments.length > 10 %>
+							</div>
+							<div class="clear"></div>
+						<% end %>
+					</div>
+				<% end %>
+			</div>
+			
+			
+			<div class="clear"></div>
+		
+		<%= render :partial => 'admin/utility/meta_form', :locals => { :form => v, :affects => 'Affects this testimonial only' } %>		
+	<% end %>
+	
+	<p class="checkbox"><%= r.check_box :active_flag %> <%= r.label :active_flag, 'Make this testimonial active' %></p>
+
+	<%= render :partial => 'admin/utility/publish_controls', :locals => { 
+																				:enable_publish => ( !@version.new_record? ), 
+																				:form => r,
+																				:show_revert => (@review.has_published?) } %>
+<% end %>

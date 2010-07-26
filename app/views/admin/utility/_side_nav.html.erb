@@ -1,0 +1,59 @@
+<h2>Add / Edit Content</h2>
+
+<ul id="side_nav">
+	<li><%= link_to 'Home Page', edit_home_page_path %></li>
+	<li><%= link_to 'Conditions', conditions_path %></li>
+	<li><%= link_to 'Treatments', treatments_path %></li>
+	<li><%= link_to 'Diagnostics', diagnostics_path %></li>
+	<li><%= link_to 'Wellness', content_intro_path('wellness') %></li>
+	<li><%= link_to 'Research', abstracts_path %></li>
+	<li><%= link_to 'Ask the Doctor', questions_path %></li>
+	<li><%= link_to 'Testimonials', testimonials_path %></li>
+	<li>
+		<%= link_to 'Appointments', appointments_path %>
+		
+		<ul>
+			<li><%= link_to 'Out of Town Hotels', hotels_path %></li>
+		</ul>
+	</li>
+	<li><%= link_to 'Locations', locations_path %></li>
+	<li>
+		<%= link_to 'About Us', about_pages_path %>
+		<ul>
+			<li><%= link_to 'Our Doctors and Staff', doctors_path %></li>
+			<li><%= link_to 'History', history_path %></li>
+			<li><%= link_to 'Patient Forms', patient_forms_path %></li>
+			<li><%= link_to 'Careers', careers_path %></li>
+			<li><%= link_to 'Medical Fellowships', medical_fellowships_path %></li>
+			<li><%= link_to 'Disclosure of Interests', disclosure_of_interests_path %></li>
+			<li>
+				<%= link_to 'News and Media', news_and_media_path %>
+				<ul>
+					<li><%= link_to 'Press Releases', press_releases_path %></li>
+					<li><%= link_to 'Media Coverage', media_entries_path %></li>
+				</ul>
+			</li>
+			<li><%= link_to 'Events', events_path %></li>
+			<li><%= link_to 'FAQs', faqs_path %></li>
+			<li><%= link_to 'Glossary', terms_path %></li>
+			
+			<% AboutPage.all_custom.each do |about_page| %>
+				<li><%= link_to truncate(h(about_page.name)), about_page_path(about_page) %></li>
+			<% end %>
+		</ul>
+	</li>
+	<li>
+		<%= link_to 'Other Pages', other_pages_path %>		
+		<ul>
+			<% OtherPage.all.each do |other_page| %>
+				<li><%= link_to h(other_page.name), edit_other_page_path(other_page.id) %></li>
+			<% end %>
+		</ul>
+	</li>	
+	<% if current_user.admin %>
+		<li><%= link_to 'All Pages', page_index_path %> <span class="admin_only">(Admin Only)</span></li>
+		<li><%= link_to 'Snippets', snippet_index_path %> <span class="admin_only">(Admin Only)</span></li>
+		<li><%= link_to 'Layouts', layout_index_path %> <span class="admin_only">(Admin Only)</span></li>
+		<li><%= link_to 'Users', user_index_path %> <span class="admin_only">(Admin Only)</span></li>
+	<% end %>
+</ul>

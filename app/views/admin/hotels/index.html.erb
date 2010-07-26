@@ -1,0 +1,108 @@
+<% content_for :sidebar do %>
+	<%= render :partial => 'admin/utility/side_nav' %>
+<% end %>
+
+<% content_for :head do %>
+	<% javascript_tag do %> 
+		document.observe('dom:loaded', function() {
+			new TabSet('tabs');
+			
+			if($('active_items')) {
+				Sortable.create('active_items', {
+					only: 'item',
+					handle: 'move',
+					onUpdate: function() {
+						$('active_save_order_button').disabled = false;
+					}
+				});
+			}
+		});		
+	<% end %>
+<% end %>
+
+<div class="left_half">
+	<h1>Add a New Hotel</h1>
+	<p>Prerequisites: None</p>
+	
+	<div class="button">
+		<%= link_to 'Add a New Hotel', new_hotel_path %>
+	</div>
+	
+	<h2>You will need:</h2>
+	
+	<ul class="bullets">
+		<li>Hotel Name</li>
+		<li>Address</li>
+		<li>Phone</li>
+		<li>Map Link</li>
+	</ul>
+	
+	<p><%= link_to 'Edit introduction copy and/or meta data for out of town page.', edit_content_path('out_of_town') %></p>
+</div>
+<div class="right_half">
+	<h1>Edit Hotels</h1>
+	
+	<div class="tab_set" id="tabs">
+		<ul class="tabs">
+			<li class="selected"><a href="#">Active</a></li>
+			<li><a href="#">Inactive</a></li>
+		</ul>
+		<div class="tab_sheet selected">					
+			<p>
+				<strong>Filter by:</strong>
+				<%= link_to_if(params[:preferred], 'All', hotels_path) %> |
+				<%= link_to_unless(params[:preferred] == 'yes', 'Preferred Hotels', hotels_path(:preferred => 'yes')) %> |
+				<%= link_to_unless(params[:preferred] == 'no', 'Additional Hotels', hotels_path(:preferred => 'no')) %>
+			</p>
+			
+			<% form_tag order_hotels_path, :id => 'order_hotels_form' do %>
+				<ul class="items_list" id="active_items">
+					<li class="header">
+						<span class="name">Hotel</span>
+						<span class="last_mod">Last Edited</span>
+						<span class="controls">&nbsp;</span>
+						<span class="clear">&nbsp;</span>
+					</li>
+					<% @hotels.each do |hotel| %>						
+						<li class="item" id="item_<%= hotel.id %>">
+							<span class="name move"><%= h hotel.name %></span>
+							<span class="last_mod"><%= hotel.updated_at.to_formatted_s(:default) %></span>
+							<span class="controls"><%= link_to 'Edit', edit_hotel_path(hotel) %></span>
+							<span class="clear">
+								<%= hidden_field_tag 'hotels[]', hotel.id, :id => "hotels_#{hotel.id}" %>
+							</span>
+						</li>
+					<% end %>
+				</ul>				
+				<p class="submit">
+					<%= submit_tag 'Save Order', :disabled => true, :id => 'active_save_order_button', :disable_with => 'Saving...' %>
+				</p>
+			<% end %>
+		</div>
+		<div class="tab_sheet">			
+			<% if @inactive.length > 0 %>
+				<ul class="items_list">
+					<li class="header">
+						<span class="name">Hotel</span>
+						<span class="last_mod">Last Edited</span>
+						<span class="controls">&nbsp;</span>
+						<span class="clear">&nbsp;</span>
+					</li>
+					<% @inactive.each do |hotel| %>						
+						<li class="item" id="item_<%= hotel.id %>">
+							<span class="name move"><%= h hotel.name %></span>
+							<span class="last_mod"><%= hotel.updated_at.to_formatted_s(:default) %></span>
+							<span class="controls"><%= link_to 'Edit', edit_hotel_path(hotel) %></span>
+							<span class="clear">&nbsp;</span>
+						</li>
+					<% end %>
+				</ul>				
+			<% else %>
+				<p class="submit">There are currently no inactive hotels</p>
+			<% end %>
+		</div>
+	</div>
+</div>
+
+<div class="clear"></div>
+

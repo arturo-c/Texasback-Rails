@@ -1,0 +1,101 @@
+<% content_for :sidebar do %>
+	<%= render :partial => 'admin/utility/side_nav' %>
+<% end %>
+
+<% content_for :head do %>
+	<script type="text/javascript">
+		document.observe('dom:loaded', function() {
+			new TabSet('tabs');
+			
+			if($('active_items')) {
+				Sortable.create('active_items', {
+					only: 'item',
+					handle: 'move',
+					onUpdate: function() {
+						$('active_save_order_button').disabled = false;
+					}
+				});
+			}
+		});		
+	</script>
+<% end %>
+
+<div class="left_half">
+	<h1>Add New Topic</h1>
+	<p>Prerequisites: None</p>
+	
+	<div class="button">
+		<%= link_to 'Add Topic', new_event_topic_path %>
+	</div>
+	
+	<h2>You will need:</h2>
+	
+	<ul class="bullets">
+		<li>Topic Name</li>
+		<li>Meta Data</li>
+	</ul>
+</div>
+<div class="right_half">
+	<h1>Edit Topics</h1>
+	
+	<div class="tab_set" id="tabs">
+		<ul class="tabs">
+			<li class="selected"><a href="#">Active</a></li>
+			<li><a href="#">Inactive</a></li>
+		</ul>
+		<div class="tab_sheet selected">			
+			<% if @active.length > 0 %>
+				<% form_tag order_event_topics_path do %>
+					<ul class="items_list" id="active_items">
+						<li class="header">
+							<span class="name">Topic</span>
+							<span class="last_mod">Last Edited</span>
+							<span class="controls">&nbsp;</span>
+							<span class="clear">&nbsp;</span>
+						</li>
+						<% @active.each do |item| %>						
+							<li class="item<%= ' draft' if item.has_unpublished? %>" id="item_<%= item.id %>">
+								<span class="name move"><%= truncate(h(item.name)) %><%= '*' if item.has_unpublished? %></span>
+								<span class="last_mod"><%= item.updated_at.to_formatted_s(:default) %></span>
+								<span class="controls"><%= link_to 'Edit', edit_event_topic_path(item) %></span>
+								<span class="clear">
+									<%= hidden_field_tag 'event_topics[]', item.id, :id => "eventtopic_#{item.id}" %>
+								</span>
+							</li>
+						<% end %>
+					</ul>				
+					<p class="submit">
+						<%= submit_tag 'Save Order', :disabled => true, :id => 'active_save_order_button', :disable_with => 'Saving...' %>
+						<span class="draft smaller">* Denotes saved, unpublished version.</span>
+					</p>
+				<% end %>
+			<% else %>
+				<p class="submit">There are no active topics.</p>
+			<% end %>
+		</div>
+		<div class="tab_sheet">
+			<% if @inactive.length > 0 %>
+					<ul class="items_list" id="inactive_items">
+						<li class="header">
+							<span class="name">Topic</span>
+							<span class="last_mod">Last Edited</span>
+							<span class="controls">&nbsp;</span>
+							<span class="clear">&nbsp;</span>
+						</li>
+						<% @inactive.each do |item| %>						
+							<li class="item<%= ' draft' if item.has_unpublished? %>" id="item_<%= item.id %>">
+								<span class="name"><%= truncate(h(item.name)) %><%= '*' if item.has_unpublished? %></span>
+								<span class="last_mod"><%= item.updated_at.to_formatted_s(:default) %></span>
+								<span class="controls"><%= link_to 'Edit', edit_event_topic_path(item) %></span>
+								<span class="clear">&nbsp;</span>
+							</li>
+						<% end %>
+					</ul>				
+			<% else %>
+				<p class="submit">There are no inactive topics.</p>
+			<% end %>
+		</div>
+	</div>
+</div>
+
+<div class="clear"></div>

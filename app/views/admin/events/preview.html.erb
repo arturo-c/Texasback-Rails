@@ -1,0 +1,7 @@
+<%= render :partial => 'admin/utility/preview_bar', :locals => { 
+																		:preview_path => "Event: #{h(@event.name)}",
+																		:button_link => edit_event_path(params[:id]) } %>
+																		
+<%= render :partial => 'about_pages/sidebar' %>
+
+<%= render :partial => 'events/event' %>

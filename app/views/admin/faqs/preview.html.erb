@@ -1,0 +1,9 @@
+<%= render :partial => 'admin/utility/preview_bar', :locals => { 
+																		:preview_path => "FAQ: #{truncate(@faq.name)}",
+																		:button_link => edit_faq_path(params[:id]) } %>
+
+<%= render :partial => 'about_pages/sidebar' %>
+
+<h2>Q: <strong><%= h @version.question %></strong></h2>
+
+<%= rich_format @version.answer %>

@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+		
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Texas Back Institute: Site Administration</title>
+		<%= stylesheet_link_tag "reset", "layout", "page", :cache => true %>
+		<!--[if lt IE 7]>
+			<%= stylesheet_link_tag "ie" %>
+		<![endif]-->
+		<%= javascript_include_tag 'tiny_mce/tiny_mce.js' %>		
+		<%= javascript_include_tag :defaults %>
+		<%= yield :head %>
+	</head>
+	<body>
+		<div id="wrapper">
+			<div id="pre_header">
+				<% if logged_in? %>
+					<span class="controls">
+						<%= link_to 'Logout', logout_path %>
+					</span>
+					Return to <a href="/">texasback.com</a>
+				<% end %>
+			</div>			
+			<div id="header">
+				<div class="primary" id="app_title">
+					Website Administration
+				</div>
+				<div class="secondary" id="app_logo">
+					<%= link_to(image_tag('/images/admin_logo.jpg', :alt => 'Texas Back Institute'), admin_path, :class => 'logo' ) %>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div id="content">
+				<% if flash[:notice] %>
+					<div id="confirm">
+						<%= flash[:notice] %>
+					</div>
+				<% end %>
+				<% if flash[:error] %>
+					<div id="error">
+						<%= flash[:error] %>
+					</div>
+				<% end %>
+						
+				<% if @content_for_sidebar %>
+					<div class="primary">
+						<%= yield %>
+					</div>
+					<div class="secondary">
+						<%= yield :sidebar %>
+					</div>
+					<div class="clear"></div>
+				<% else %>		
+					<%= yield %>
+				<% end %>				
+			</div>
+		</div>
+	</body>
+</html>

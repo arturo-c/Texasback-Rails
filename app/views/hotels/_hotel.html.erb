@@ -1,0 +1,26 @@
+<dl class="address">
+	<dt><%= h hotel.name %></dt>
+	<% unless hotel.address1.blank? %>
+		<dd><%= h hotel.address1 %></dd>
+	<% end%>
+	
+	<% unless hotel.address2.blank? %>
+		<dd><%= h hotel.address2 %></dd>
+	<% end%>
+	
+	<% unless hotel.city.blank? %>
+		<dd><%= h hotel.city.strip %>, <%= h hotel.state %> <%= h hotel.zip %></dd>
+	<% end %>
+	
+	<% unless hotel.phone.blank? %>
+		<dd>Phone: <%= h hotel.phone %></dd>
+	<% end %>
+	
+	<% unless hotel.website.blank? %>
+		<dd>Website: <%= link_to(h(hotel.website), h(hotel.website), :target => '_blank') %></dd>
+	<% end %>
+	
+	<% unless hotel.map_link.blank? %>
+		<dd><%= link_to('Get Directions', h(hotel.map_link), :target => '_blank') %></dd>
+	<% end %>
+</dl>

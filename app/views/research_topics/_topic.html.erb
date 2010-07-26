@@ -1,0 +1,17 @@
+<h2><%= h @topic.name.strip %></h2>
+
+<% if @topic.has_published_abstracts? %>
+	<ul class="research_articles">
+		<% @topic.published_abstracts.each do |abstract| %>
+			<li>
+				<%= link_to h(abstract.name.strip), view_abstract_path(:slug => abstract.slug) %> 
+				<span class="date"><%= abstract.publish_date.to_formatted_s(:month_and_year) %></span>
+				<% unless abstract.published.author.blank? %>
+					<span class="author"><%= h abstract.published.author %></span>
+				<% end %>
+			</li>
+		<% end %>
+	</ul>
+<% else %>
+	<p>There are no articles for this topic.</p>
+<% end %>

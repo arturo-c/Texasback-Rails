@@ -1,0 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>Texas Back Institute: <%= @title %></title>
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" href="/_css/base.css" type="text/css" media="all" charset="utf-8">
+		<link rel="stylesheet" href="/_css/screen.css" type="text/css" media="screen" charset="utf-8">
+		<link rel="stylesheet" href="/_css/navigation.css" type="text/css" media="screen" charset="utf-8">
+		<!--[if IE]><link rel="stylesheet" href="/_css/screen-ie.css" type="text/css" media="screen" charset="utf-8"><![endif]-->
+		<link rel="stylesheet" href="/_css/print.css" type="text/css" media="print" charset="utf-8">
+		<script src="/_js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="/_js/all.js"></script>
+		<%= yield :head %>
+	</head>
+	<body class="popup">
+		<div id="popup">
+			<%= yield %>
+		</div>
+	</body>
+</html>

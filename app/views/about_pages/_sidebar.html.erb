@@ -1,0 +1,15 @@
+<% content_for :secondary do %>
+	<h3>About Us</h3>
+	
+	<ul>
+		<% @about_pages.each do |page| %>
+			<% if page.published? %>
+				<% if page == @about_page or page.name == @about_page_name %>
+					<li><%= h page.name %></li>
+				<% else %>
+					<li><%= link_to h(page.name), about_us_page_path(:slug => page.slug) %></li>
+				<% end %>
+			<% end %>
+		<% end %>
+	</ul>
+<% end %>

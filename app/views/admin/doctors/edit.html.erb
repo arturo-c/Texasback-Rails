@@ -1,0 +1,15 @@
+<% content_for :head do %>
+	<script type="text/javascript">
+	document.observe('dom:loaded', function() {
+		$('doctor_slug').activate();
+	});
+	</script>
+<% end %>
+
+<div id="breadcrumbs">
+	<%= link_to 'Home', admin_path %> &gt; <%= link_to 'Doctors and Staff', doctors_path %> &gt; Edit Doctor or Staff Member
+</div>
+
+<h1>Edit Doctor or Staff Member</h1>
+
+<%= render :partial => 'form' %>

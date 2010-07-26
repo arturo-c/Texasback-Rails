@@ -1,0 +1,10 @@
+<h3 class="tight">Q: <strong><%= h version.the_question %></strong></h3>
+
+<% if @truncated_questions %>
+	<p><%= "A: #{h(version.short_answer.strip)}&#8230;" %><br />
+	<%= link_to 'Learn more &raquo;', view_question_path(:slug => question.slug ) %></p>
+<% else %>
+	<%= rich_format version.the_answer %>
+	
+	<p><%= link_to 'Make an appointment', '/appointments' %></p>
+<% end %>

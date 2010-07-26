@@ -1,0 +1,10 @@
+<%= render :partial => 'admin/utility/preview_bar', :locals => { 
+																		:preview_path => "Doctor or Staff Member: #{h(@doctor.name)}",
+																		:button_link => edit_doctor_path(params[:id]) } %>
+
+
+<%= render :partial => 'about_pages/sidebar' %>
+
+<h2>Our Doctors and Staff</h2>
+
+<%= render :partial => 'doctors/doctor', :locals => { :doctor => @doctor, :version => @version } %>

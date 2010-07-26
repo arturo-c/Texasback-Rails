@@ -1,0 +1,35 @@
+<h2><%= h @abstract.name %></h2>
+
+<%= rich_format @version.bibliography %>
+
+<h3>Subject</h3>
+
+<p>
+	<%- @abstract.topics.each_with_index do |topic, index| -%><%= ", " unless index == 0 %><%= link_to h(topic.name), view_research_topic_path(:slug => topic.slug) -%><%- end -%>
+</p>
+
+<%= rich_format @version.full_description %>
+
+<% unless @version.introduction_block.blank? %>
+	<h3>Introduction</h3>
+	
+	<%= rich_format @version.introduction_block %>
+<% end %>
+
+<% unless @version.methods_block.blank? %>
+	<h3>Methods</h3>
+	
+	<%= rich_format @version.methods_block %>
+<% end %>
+
+<% unless @version.results_block.blank? %>
+	<h3>Results</h3>
+	
+	<%= rich_format @version.results_block %>
+<% end %>
+
+<% unless @version.conclusions_block.blank? %>
+	<h3>Conclusions</h3>
+	
+	<%= rich_format @version.conclusions_block %>
+<% end %>

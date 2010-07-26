@@ -1,0 +1,25 @@
+<% content_for :secondary do %>
+	<ul>
+			<li><%= link_to '&laquo; Back to Treatments', treatments_list_path %></li>
+	</ul>	
+<% end %>
+
+<h2><%= h @type.name %></h2>
+
+<ul>
+	<% @type.published_treatments.each do |treatment| %>
+		<li><%= link_to(h(treatment.name), view_treatment_path(:slug => treatment.slug))%></li>
+	<% end %>
+	<% @type.children.each do |child_type| %>
+		<% if child_type.has_published_treatments? %>
+			<li class="sub_section">
+				<%= h child_type.name %>
+				<ul>
+					<% child_type.published_treatments.each do |child_treatment| %>
+						<li><%= link_to(h(child_treatment.name), view_treatment_path(:slug => child_treatment.slug))%></li>
+					<% end %>
+				</ul>
+			</li>
+		<% end %>		
+	<% end %>
+</ul>

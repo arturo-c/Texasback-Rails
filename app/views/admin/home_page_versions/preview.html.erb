@@ -1,0 +1,115 @@
+<% content_for :head do %>
+	<script type="text/javascript" src="/_js/swfobject.js"></script>
+	<script type="text/javascript" src="/_js/jquery.cycle.min.js"></script>
+	<script type="text/javascript">
+		swfobject.addDomLoadEvent(function() {
+			if ( !location.search.match(/showSlideShow/) && swfobject.hasFlashPlayerVersion("8.0.0") )
+				swfobject.embedSWF("/_flash/homepage_flash.swf", "home_flash", "956", "262", "8.0.0", "/_flash/expressInstall.swf");
+			else {
+				var imgs = [];
+				for ( var i=1; i<=5; i++ )
+					imgs.push('<img src="/_images/home_page_animation/'+i+'.jpg" width="956" height="256">');
+				$('#home_flash')
+					.html( imgs.join('') )
+					.find('img')
+						.css('cursor', 'pointer')
+						.hide()
+						.bind('click', function(event) {
+							window.location = '/appointments';
+						});
+				$(window).bind('load', function() {
+					$('#home_flash').cycle({
+						timeout: 1,
+						speed: 500,
+						continuous: 0,
+						nowrap: true
+					});
+				});
+			}	
+		});
+		
+		$(function() {
+			$('div#promo_tabs h2 a').bind('click', function(event) {
+				var id = $(this).attr('id').split('_')[1];
+				
+				$('div#promo_tabs h2').attr('className', id);
+				
+				$('div#promo_tabs')
+					.find('div.tab').hide().end()
+					.find('div#content_' + id).show();
+				
+				return false;
+			});
+		});
+	</script>
+<% end %>
+
+<%= render :partial => 'admin/utility/preview_bar', :locals => { 
+																		:preview_path => "the TBI home page", 
+																		:button_link => edit_homepage_path_for(params[:from]) } %>
+
+<div class="promo tabs" id="promo_tabs">
+	<h2 class="news">
+		<%= link_to(content_tag(:span, 'News'), @news_link, :id => 'tab_news') %>
+		<%= link_to(content_tag(:span, 'Wellness'), @wellness_link, :id => 'tab_wellness') %>
+		<%= link_to(content_tag(:span, 'Research'), @research_link, :id => 'tab_research') %>
+		<%= link_to(content_tag(:span, 'Testimonials'), @testimonials_link, :id => 'tab_testimonials') %>
+	</h2>
+
+	<div id="content_news" class="tab">
+		<div class="promo_content">
+			<img src="/_images/news_tab.jpg" width="115" height="107" alt="News" />
+
+			<p><%= h @news_content %></p>
+		</div>
+
+		<p class="home_tab_link"><%= link_to 'Learn&nbsp;more&nbsp;&raquo;', @news_link %></p>
+	</div>
+	<div id="content_wellness" style="display:none;" class="tab">
+		<div class="promo_content">
+			<img src="/_images/wellness_tab.jpg" width="115" height="107" alt="Wellness" />
+
+			<p><%= h @wellness_content %></p>
+		</div>
+
+		<p class="home_tab_link"><%= link_to 'Learn&nbsp;more&nbsp;&raquo;', @wellness_link %></p>
+	</div>
+	<div id="content_research" style="display:none;" class="tab">
+		<div class="promo_content">
+			<img src="/_images/research_tab.jpg" width="115" height="107" alt="Research" />
+
+			<p><%= h @research_content %></p>
+		</div>
+
+		<p class="home_tab_link"><%= link_to 'Learn&nbsp;more&nbsp;&raquo;', @research_link %></p>
+	</div>
+	<div id="content_testimonials" style="display:none;" class="tab">
+		<div class="promo_content">
+			<img src="/_images/testimonials_tab.jpg" width="115" height="107" alt="Testimonials" />
+
+			<p><%= h @testimonials_content %></p>
+		</div>
+
+		<p class="home_tab_link"><%= link_to 'Learn&nbsp;more&nbsp;&raquo;', @testimonials_link %></p>
+	</div>
+</div>
+<div class="promo conditions">
+	<h2>Conditions &amp; Treatments<span>&nbsp;</span></h2>
+	<div class="promo_content">
+		<img src="/_images/conditions_home.jpg" width="115" height="107" alt="Conditions &amp; Treatments" />	
+		<p><%= h @conditions_content %></p>
+	</div>
+	<p class="home_tab_link">
+		<%= link_to 'Conditions', conditions_list_path %>
+		&nbsp;
+		<%= link_to 'Treatments', treatments_list_path %>
+	</p>
+</div>
+<div class="promo events">
+	<h2>Events &amp; Outreach<span>&nbsp;</span></h2>
+	<div class="promo_content">
+		<img src="/_images/events_tab.jpg" width="115" height="107" alt="Events &amp; Outreach" />
+		<p><%= h @events_content %></p>		
+	</div>
+	<p class="home_tab_link"><%= link_to 'Learn&nbsp;more&nbsp;&raquo;', @home_page_content.events_link %></p>
+</div>

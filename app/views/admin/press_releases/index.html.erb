@@ -1,0 +1,80 @@
+<% content_for :sidebar do %>
+	<%= render :partial => 'admin/utility/side_nav' %>
+<% end %>
+
+<% content_for :head do %>
+	<% javascript_tag do %> 
+		document.observe('dom:loaded', function() {
+			new TabSet('releases');
+		});		
+	<% end %>
+<% end %>
+	
+<div class="left_half">
+	<h1>Add a New Press Release</h1>
+	<p>Prerequisites: None</p>
+	
+	<div class="button">
+		<%= link_to 'Add a New Press Release', new_press_release_path %>
+	</div>
+	
+	<h2>You will need:</h2>
+	
+	<ul class="bullets">
+		<li>Release Title</li>
+		<li>Date</li>
+		<li>Document</li>
+	</ul>
+</div>
+<div class="right_half">
+	<h1>Edit Press Releases</h1>
+	
+	<div class="tab_set" id="releases">
+		<ul class="tabs">
+			<li class="selected"><a href="#">Active</a></li>
+			<li><a href="#">Inactive</a></li>
+		</ul>
+		<div class="tab_sheet selected">					
+			<ul class="items_list">
+				<li class="header">
+					<span class="name">Release</span>
+					<span class="last_mod">Last Edited</span>
+					<span class="controls">&nbsp;</span>
+					<span class="clear">&nbsp;</span>
+				</li>
+				<% @active_releases.each do |release| %>						
+					<li class="item" id="item_<%= release.id %>">
+						<span class="name"><%= h release.name %></span>
+						<span class="last_mod"><%= release.updated_at.to_formatted_s(:default) %></span>
+						<span class="controls"><%= link_to 'Edit', edit_press_release_path(release) %></span>
+						<span class="clear">&nbsp;</span>
+					</li>
+				<% end %>
+			</ul>				
+		</div>
+		<div class="tab_sheet">					
+			<% if @inactive_releases.length > 0 %>
+				<ul class="items_list">
+					<li class="header">
+						<span class="name">Release</span>
+						<span class="last_mod">Last Edited</span>
+						<span class="controls">&nbsp;</span>
+						<span class="clear">&nbsp;</span>
+					</li>
+					<% @inactive_releases.each do |release| %>						
+						<li class="item" id="item_<%= release.id %>">
+							<span class="name"><%= h release.name %></span>
+							<span class="last_mod"><%= release.updated_at.to_formatted_s(:default) %></span>
+							<span class="controls"><%= link_to 'Edit', edit_press_release_path(release) %></span>
+							<span class="clear">&nbsp;</span>
+						</li>
+					<% end %>
+				</ul>
+			<% else %>
+				<p class="submit">There are no inactive press releases</p>
+			<% end %>
+		</div>
+	</div>
+</div>
+
+<div class="clear"></div>

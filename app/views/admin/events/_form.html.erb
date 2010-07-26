@@ -1,0 +1,73 @@
+<%= show_errors_for :event %>
+
+<% form_for @event, :html => { :id => 'event_form' } do |f| %>
+	<% fields_for "event[draft_version_attributes]", @version do |v| %>
+		<div class="left_half" style="width:65%;">
+			<dl class="form">
+				<dt><%= f.label :name, 'Event Name' %></dt>
+				<dd><%= f.text_field :name, :size => 40, :maxlength => 250 %></dd>
+				
+				<dt><%= f.label :event_date, 'Event Date' %></dt>
+				<dd><%= f.date_select :event_date, :order => [ :month, :day, :year ] %></dd>
+				
+				<dt><%= f.label :event_date, 'Event Time' %></dt>
+				<dd>
+					<%= select_tag('event_hour', options_for_select(hours, @event.event_hour.to_s))	 %>
+					<%= select_tag('event[event_date(5i)]', options_for_select(minutes, @event.event_minute.to_s), :id => 'event_event_date_5i') %>
+					<%= select_tag('event_ampm', options_for_select(ampms, @event.event_ampm)) %>
+					
+					<%= hidden_field_tag('event[event_date(4i)]', @event.event_hour, :id => 'event_event_date_4i') %>
+				</dd>
+				
+				<dt><%= v.label :location, 'Event Location' %></dt>
+				<dd><%= v.text_field :location, :size => 50, :maxlength => 200 %></dd>
+				
+				<dt><%= v.label :presenter, 'Presenter' %></dt>
+				<dd><%= v.text_field :presenter, :size => 50, :maxlength => 200 %></dd>
+				
+				<dt><%= v.label :short_description, 'Brief Description' %> (this will be displayed on the events list only)</dt>
+				<dd><%= v.text_area :short_description, :cols => 60, :rows => 5, :class => 'full' %></dd>
+				
+				<dt><%= v.label :full_description, 'Full Description' %> (this description will appear when you click on an event)</dt>
+				<dd><%= v.rich_text :full_description %></dd>
+			</dl>
+		</div>
+		<div class="right_half" style="width:32%">
+			<p><strong>Topic(s)</strong> Choose all that apply</p>
+			
+			<ul class="check_list">
+				<%= render :partial => 'admin/event_topics/topic', :collection => @topics %>
+				
+				<li class="action" id="add_topic_link_row">
+					<%= link_to_function 'Add Topic', add_topic_link %>
+				</li>
+				<li class="edit action" id="add_topic_field_row" style="display:none;">
+					<%= text_field_tag 'new_topic_name', '', :size => 25, :maxlength => '200', :onkeydown => ignore_enter_key %><br />
+					<span class="controls"><%= button_to_function 'Add', add_topic_button %> or <%= link_to_function 'Cancel', cancel_add_topic %></span>
+					<span class="loading" style="display:none;">Adding&#8230;</span>
+				</li>
+			</ul>
+		</div>
+		
+		<div class="clear"></div>
+		
+		<% unless @event.new_record? %>
+			<div class="form_block">
+				<h2>Images</h2>
+		
+				<p>There are <%= @event.images.length %> <%= pluralize(@event.images.length, "image") %> attached to this event.  <%= link_to 'Add/Edit Images', event_images_path(@event) %></p>
+				
+				<%= render :partial => 'admin/event_images/images', :locals => { :editable => false } %>				
+			</div>
+		<% end %>
+		
+		<%= render :partial => 'admin/utility/meta_form', :locals => { :form => v, :affects => 'Affects this event only' } %>		
+	<% end %>
+	
+	<p class="checkbox"><%= f.check_box :active_flag %> <%= f.label :active_flag, 'Make this event active' %></p>
+
+	<%= render :partial => 'admin/utility/publish_controls', :locals => { 
+																				:enable_publish => ( !@version.new_record? ), 
+																				:form => f,
+																				:show_revert => (@event.has_published?) } %>
+<% end %>

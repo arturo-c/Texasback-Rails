@@ -1,0 +1,44 @@
+<% content_for :title do %>Contact Us or Schedule an Appointment<% end %>
+
+<% content_for :description do %>
+	Contact the Texas Back Institute if you have any questions or comments, and we will return your inquiry as soon as possible, or call 800-247-2225.
+<% end %>
+
+<% content_for :keywords do %>
+	back pain, lower back pain, back pain relief, low back pain, lower back pain causes, upper back pain, lower back pain relief, neck pain, back pain treatments, chronic back pain, back pain information, scoliosis, herniated disc, degenerative disc, spinal fracture, backache, back ache, spine injury, back doctor, spine treatment, osteoporosis, whiplash, joint pain, rehabilitation
+<% end %>
+
+<% content_for :header_content do %>
+	<img class="hero" src="/_images/hero_contact_us.jpg" alt="Please feel free to ask us a question or send us a comment at any time. Call 800-247-2225." width="956" height="119" />
+<% end %>
+
+<% content_for :body_class do %>contact_us<% end %>
+
+<h2>Thank You</h2>
+
+<p>We appreciate your interest in Texas Back Institute. Thank you for taking the time to get in touch with us. Someone will respond to you as soon as possible.</p>
+
+<ul>
+	<li><a href="/">Home</a></li>
+	<li><a href="/appointments">Schedule an Appointment</a></li>
+	<li><a href="/locations">Find a Location</a></li>
+</ul>
+
+<% if flash[:contact_form] %>
+	<% content_for :content_top do %>
+		<!-- Start of DoubleClick Spotlight Tag: Please do not remove-->
+		<!-- Activity Name for this tag is:Contact Us -->
+		<!-- Web site URL where tag should be placed: http://www.texasback.com/contact_us -->
+		<!-- This tag must be placed within the opening <body> tag, as close to the beginning of it as possible-->
+		<!-- Creation Date:04/02/09 -->
+		<SCRIPT language="JavaScript">
+		var axel = Math.random()+"";
+		var a = axel * 10000000000000;
+		document.write('<IFRAME SRC="http://fls.doubleclick.net/activityi;src=2226059;type=texas617;cat=conta853;u1=<%= flash[:contact_form] %>;ord=1;num='+ a + '?" WIDTH=1 HEIGHT=1 FRAMEBORDER=0></IFRAME>');
+		</SCRIPT>
+		<NOSCRIPT>
+		<IFRAME SRC="http://fls.doubleclick.net/activityi;src=2226059;type=texas617;cat=conta853;u1=<%= flash[:contact_form] %>;ord=1;num=1?" WIDTH=1 HEIGHT=1 FRAMEBORDER=0></IFRAME>
+		</NOSCRIPT>
+		<!-- End of DoubleClick Spotlight Tag: Please do not remove-->
+	<% end %>
+<% end %>

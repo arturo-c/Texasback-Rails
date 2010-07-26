@@ -1,0 +1,69 @@
+<% content_for :sidebar do %>
+	<%= render :partial => 'admin/utility/side_nav' %>
+<% end %>
+
+<div class="left_half">
+	<h1>Edit Home Page</h1>
+	<p>Prerequisites: None</p>
+	
+	<p><%= link_to 'Edit meta data for Home page', edit_home_page_meta_path %></p>
+	<p><%= link_to 'Choose Home Page Animation', home_page_animations_path %></p>
+	<p><%= link_to 'Manage Home Page Images', home_page_images_path %></p>
+</div>
+<div class="right_half">
+	<h1>Edit Promos</h1>
+	
+	<div class="tab_set" id="tabs">
+		<ul class="tabs">
+			<li class="selected"><a href="#">Active</a></li>
+		</ul>
+		<div class="tab_sheet selected">			
+				<ul class="items_list">
+					<li class="header">
+						<span class="name">Promo</span>
+						<span class="last_mod">&nbsp;</span>
+						<span class="controls">&nbsp;</span>
+						<span class="clear">&nbsp;</span>
+					</li>				
+					<li class="item">
+						<span class="name">News</span>
+						<span class="last_mod">&nbsp;</span>
+						<span class="controls"><%= link_to 'Edit', edit_home_page_news_path %></span>
+						<span class="clear">&nbsp;</span>
+					</li>
+					<li class="item">
+						<span class="name">Wellness</span>
+						<span class="last_mod">&nbsp;</span>
+						<span class="controls"><%= link_to 'Edit', edit_home_page_wellness_path %></span>
+						<span class="clear">&nbsp;</span>
+					</li>
+					<li class="item">
+						<span class="name">Research</span>
+						<span class="last_mod">&nbsp;</span>
+						<span class="controls"><%= link_to 'Edit', edit_home_page_research_path %></span>
+						<span class="clear">&nbsp;</span>
+					</li>
+					<li class="item">
+						<span class="name">Testimonials</span>
+						<span class="last_mod">&nbsp;</span>
+						<span class="controls"><%= link_to 'Edit', edit_home_page_review_path %></span>
+						<span class="clear">&nbsp;</span>
+					</li>
+					<li class="item">
+						<span class="name">Conditions &amp; Treatments</span>
+						<span class="last_mod">&nbsp;</span>
+						<span class="controls"><%= link_to 'Edit', edit_home_page_conditions_path %></span>
+						<span class="clear">&nbsp;</span>
+					</li>
+					<li class="item">
+						<span class="name">Events &amp; Outreach</span>
+						<span class="last_mod">&nbsp;</span>
+						<span class="controls"><%= link_to 'Edit', edit_home_page_events_path %></span>
+						<span class="clear">&nbsp;</span>
+					</li>
+				</ul>	
+		</div>
+	</div>
+</div>
+
+<div class="clear"></div>

@@ -1,0 +1,22 @@
+<div id="login_box">
+	<% form_tag login_url do %>
+		<dl class="form">
+			<dt><%= label_tag "user_login", "Username" %></dt>
+			<dd><%= text_field "user", "login", :class => 'textbox activate', :value => '', :maxlength => 40, :size => 40 %></dd>
+			
+			<dt><%= label_tag "user_password", "Password" %></dt>
+			<dd><%= password_field "user", "password", :class => 'textbox', :value => '', :maxlength => 40, :size => 40 %></dd>
+		</dl>
+		
+		<p class="checkbox">
+			<%= check_box_tag :remember_me, 1, false, :class => 'checkbox' %>
+			<%= label_tag 'remember_me', 'Remember me on this computer' %>
+		</p>
+		
+		<p class="submit"><%= submit_tag 'Login', :disable_with => 'Logging in...' %></p>
+	<% end %>
+</div>
+
+<% javascript_tag do %>
+	$('user_login').activate();
+<% end %>

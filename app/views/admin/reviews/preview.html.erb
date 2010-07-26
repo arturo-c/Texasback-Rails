@@ -1,0 +1,7 @@
+<%= render :partial => 'admin/utility/preview_bar', :locals => { 
+																		:preview_path => "Testimonial: #{h(@review.name)}",
+																		:button_link => edit_testimonial_path(params[:id]) } %>
+																		
+																		
+<%= render :partial => 'reviews/review' %>
+

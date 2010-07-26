@@ -1,0 +1,6 @@
+<h4 class="tight"><%= h event_small.name %> <em><%= event_small.event_date.to_formatted_s(:short_with_time) %></em></h4>
+
+<p class="tight">
+	<%= h event_small.published.short_description %>
+	<br /><%= link_to 'Learn more&raquo;', view_event_path(event_small.id) %>
+</p>

@@ -1,0 +1,13 @@
+<% content_for :secondary do %>
+	<h3>Diagnostics</h3>
+	
+	<ul>
+		<% @diagnostics.each do |d| %>
+			<% if @diagnostic == d %>
+				<li><%= h d.name %></li>
+			<% else %>
+				<li><%= link_to(h(d.name), view_diagnostic_path(:slug => d.slug)) %></li>
+			<% end %>			
+		<% end %>
+	</ul>
+<% end %>

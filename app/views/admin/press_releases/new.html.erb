@@ -1,0 +1,25 @@
+<% content_for :head do %>
+	<script type="text/javascript">
+	document.observe('dom:loaded', function() {
+		$('press_release_name').activate();
+		
+		$('file_upload_uploaded_data').up('form').observe('submit', function(event) {
+			if($('upload_file_block').visible()) {
+				if($F('file_upload_uploaded_data').toLowerCase().indexOf('.pdf') <= 0) {
+					alert('Only PDF files can be uploaded, please choose a pdf file.');
+
+					event.stop();
+				}
+			}
+		});
+	});
+	</script>
+<% end %>
+
+<div id="breadcrumbs">
+	<%= link_to 'Home', admin_path %> &gt; <%= link_to 'Press Releases', press_releases_path %> &gt; Add Press Release
+</div>
+
+<h1>Add Press Release</h1>
+
+<%= render :partial => 'form' %>

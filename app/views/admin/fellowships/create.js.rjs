@@ -1,0 +1,8 @@
+unless @fellowship.new_record?
+  page.insert_html :bottom, :doctor_draft_version_attributes_fellowship_id, content_tag(:option, escape_javascript(@fellowship.name), :value => @fellowship.id)
+
+  page[:doctor_draft_version_attributes_fellowship_id].value = @fellowship.id
+end
+
+page[:add_fellowship_link].show
+page[:add_fellowship_note].hide

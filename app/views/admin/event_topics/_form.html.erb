@@ -1,0 +1,21 @@
+<%= show_errors_for :topic %>
+
+<% form_for @topic do |f| %>
+	<dl class="form">
+		<dt><%= f.label :name, 'Topic Name' %></dt>
+		<dd><%= f.text_field :name, :size => 40, :maxlength => 250 %></dd>
+	</dl>
+	
+	<p><%= f.label :slug, 'URL:' %> http://texasback.com/about_us/events/topics/<%= f.text_field :slug, :maxlength => 40, :size => 20 %></p>
+	
+	<% fields_for "event_topic[draft_version_attributes]", @version do |v| %>		
+		<%= render :partial => 'admin/utility/meta_form', :locals => { :form => v, :affects => 'Topic page only' } %>	
+	<% end %>
+	
+	<p class="checkbox"><%= f.check_box :active_flag %> <%= f.label :active_flag, 'Make this topic active' %></p>
+
+	<%= render :partial => 'admin/utility/publish_controls', :locals => { 
+																				:enable_publish => ( !@version.new_record? ), 
+																				:form => f,
+																				:show_revert => (@topic.has_published?) } %>
+<% end %>

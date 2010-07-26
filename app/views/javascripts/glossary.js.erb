@@ -1,0 +1,39 @@
+var terms = <%= terms_json_list_for(@terms) %>;
+
+$(function() {
+  <%- @terms.each do |term| -%>
+    <%- unless term.name.match(/'|"|\(|\)/) -%>
+    i = $('#primary > p:contains("<%= h(term.name) %>")').get(0); if(i) { $(i).html($(i).html().replace(" <%= h(term.name) %> ", " <a href=\"#\" class=\"glossary\" id=\"term_<%= term.id %>\"><%= h(term.name) %></a> ")); }
+    <%- end -%>
+  <%- end -%>  
+  
+  $('body').append('<div id="glossary_popup" style="display:none;"><a href="#" class="closer"><span>Close</span></a><div><h5>term</h5><p>definition</p><p><a href="/about_us/glossary">Go to Glossary</a></p></div></div>');
+  
+  var popup = $('div#glossary_popup');
+  
+  $('div#glossary_popup a.closer').click(function() {
+    popup.fadeOut();
+    
+    return false;
+  });
+  
+  function clickGlossary(event) {
+    var term = terms[$(this).attr('id').split('_')[1]];
+    
+    popup.find('h5').html(term.name).next('p').html(term.definition);
+    
+    var left = event.pageX - popup.outerWidth() + 47;
+		var top = event.pageY - popup.outerHeight() - 8;
+		var right = "auto";	
+		
+		popup.css({
+			left: left,
+			right: right,
+			top: top
+		}).fadeIn();
+    
+    return false;
+  }
+  
+  $('a.glossary').click(clickGlossary);
+});

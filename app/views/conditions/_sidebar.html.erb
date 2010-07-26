@@ -1,0 +1,13 @@
+<% content_for :secondary do %>
+	<h3>Specific Conditions</h3>
+
+	<ul>
+	<% Condition.all_published.each do |condition| %>
+		<% if condition == @condition %>
+			<li><%= h condition.name %></li>
+		<% else %>
+			<li><%= link_to h(condition.name), view_condition_path(condition.slug) %></li>
+		<% end %>		
+	<% end %>
+	</ul>
+<% end %>

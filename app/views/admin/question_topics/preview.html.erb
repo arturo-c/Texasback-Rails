@@ -1,0 +1,7 @@
+<%= render :partial => 'admin/utility/preview_bar', :locals => { 
+																		:preview_path => "Ask the Doctor Topic: #{h(@topic.name)}",
+																		:button_link => edit_question_topic_path(params[:id]) } %>
+
+<%= render :partial => 'questions/sidebar' %>
+
+<%= render :partial => 'question_topics/topic' %>

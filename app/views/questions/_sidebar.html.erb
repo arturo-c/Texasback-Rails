@@ -1,0 +1,31 @@
+<% content_for :secondary do %>
+	<h3>Topics Filter</h3>
+
+	<ul>
+		<% if params[:action] == 'index' %>
+			<li>All Topics</li>
+		<% else %>
+			<li><%= link_to 'All Topics', questions_list_path %></li>
+		<% end %>
+		
+		<% @topics.each do |topic| %>
+			<% if topic.has_published_questions? %>
+				<% if topic == @topic %>
+					<li><%= h topic.name %></li>
+				<% else %>
+					<li><%= link_to h(topic.name), view_question_topic_path(:slug => topic.slug) %></li>
+				<% end %>
+			<% end %>
+		<% end %>
+	</ul>
+	
+	<% unless @hide_form_link %>	
+		<h3>Have a Question?</h3>
+	
+		<p>The doctor is in and he&#8217;s taking questions. <%= link_to 'Submit yours now.', ask_question_path %></p>	
+	<% end %>
+	
+	<h3>Need Access to Your Medical Records?</h3>
+	
+	<p>Email our staff with your request.<br /><a href="mailto:medicalrecords@texasback.com">medicalrecords@texasback.com</a></p>
+<% end %>

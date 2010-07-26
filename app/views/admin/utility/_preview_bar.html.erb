@@ -1,0 +1,45 @@
+<% content_for :head do %>
+	<style type="text/css">
+	div#content_preview_pane {
+		background: #000;
+		padding: 10px;
+		margin-top: -9px;
+		margin-bottom: 9px;
+		font-family: Helvetica, Arial, sans-serif;
+		font-size: 14px;
+		font-weight: normal;		
+		color: #fff;
+		line-height: 20px;
+	}
+	
+	div#content_preview_pane strong {
+		font-weight: bold;
+		color: #F1B2B1;
+	}
+	
+	div#content_preview_pane div.controls {
+		float: right;
+	}
+	</style>
+	
+	<script type="text/javascript">
+	var confirm = true;
+	
+	window.onbeforeunload = confirmExit;
+	
+	function confirmExit() {
+		if(confirm){
+			return "Leaving this preview will take you to the published site.";
+		}
+	}
+	</script>
+<% end %>
+
+<% content_for :content_top do %>	
+	<div id="content_preview_pane">		
+		<div class="controls">
+			<%= button_to "Return to Edit Content", button_link, :method => :get, :onclick => "confirm=false;" %>
+		</div>
+		You are previewing <strong><%= preview_path %></strong>
+	</div>
+<% end %>

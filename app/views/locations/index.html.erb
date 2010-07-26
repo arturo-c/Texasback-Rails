@@ -1,0 +1,61 @@
+<% content_for :head do %>
+	<script src="http://maps.google.com/maps?file=api&amp;v=2.144a&amp;sensor=false&amp;key=<%= CONFIG["maps_api_key"] %>" type="text/javascript"></script>
+	<%= javascript_include_tag "/_js/jquery.class.js", "/_js/jquery.thickbox.js", "/_js/locations.js" %>
+	<%= stylesheet_link_tag "/_css/thickbox.css" %>
+	<script type="text/javascript">
+	locations = <%= Location.json_list %>;
+	teams = <%= Team.json_list %>;
+	</script>
+	
+	<!-- DoubleClick Tags -->
+	<script type="text/javascript">
+	function trackClick() {
+	  var img = new Image(), axel = Math.random()+"", a = axel * 10000000000000;
+		img.src ='http://ad.doubleclick.net/activity;src=2226059;type=texas617;cat=locat168;ord=1;num='+ a + '?';
+	}
+	</script>
+	<!-- end doubleclick tag -->
+<% end %>
+
+<% content_for :secondary do %>
+	<div id="map_teams">	
+		<h3 id="map_note">Find a Specialist</h3>
+
+		<% @teams.each_with_index do |team, index| %>
+			<div class="team_container">
+				<% content_tag_for(:a, team, :href => '#') do %>
+					<%= h(team.name) %>
+					<span class="viewmore">
+						<span class="closed">View Locations &raquo;</span>
+						<span class="open">Close</span>
+					</span>
+				<% end %>
+			
+				<% content_tag(:div, :class => 'specialty_details', :id => "special_#{team.id}", :style => 'display:none;') do %>
+					&nbsp;
+				<% end %>
+			</div>
+		<% end %>
+		<div class="clear"></div>
+	</div>
+	
+	<%= @locations_page.part_content(:secondary) %>
+<% end %>
+
+<%= rich_format @locations_page.part_content('body') %>
+
+<div id="map"></div>
+
+<div id="all_locations">
+	<h2>All Locations</h2>
+	
+	<h3>Texas</h3>
+
+	<%= render :partial => 'location', :collection => @tx_locations %>
+
+	<h3>Arizona</h3>
+
+	<%= render :partial => 'location', :collection => @az_locations %>
+</div>
+
+<div id="viewDoctorsPopup" style="display:none"></div>

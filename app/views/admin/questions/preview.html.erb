@@ -1,0 +1,10 @@
+<%= render :partial => 'admin/utility/preview_bar', :locals => { 
+																		:preview_path => "Question: #{truncate(h(@question.name))}",
+																		:button_link => edit_question_path(params[:id]) } %>
+
+
+<%= render :partial => 'questions/sidebar' %>																	
+
+<h2>Ask the Doctor</h2>
+
+<%= render :partial => 'questions/question', :locals => { :question => @question, :version => @version } %>

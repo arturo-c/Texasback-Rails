@@ -1,0 +1,33 @@
+<% content_for :head do %>
+	<script type="text/javascript">
+	document.observe('dom:loaded', function() {	
+		new TextAreaLimiter('home_page_version_wellness_content', 200);
+	});
+	</script>
+<% end %>
+
+<div id="breadcrumbs">
+	<%= link_to 'Home', admin_path %> &gt; <%= link_to 'Home Page', edit_home_page_path %> &gt; Edit Wellness
+</div>
+
+<%= show_errors_for :version %>
+
+<% form_tag update_home_page_wellness_path do %>
+	<% fields_for @version do |f| %>
+		<div class="form_block left_half">
+			<dl class="form">
+				<dt><%= f.label :wellness_content, 'Wellness' %></dt>
+				<dd><%= f.text_area :wellness_content, :cols => 50, :rows => 10 %></dd>
+			
+				<dt><%= f.label :wellness_link, 'Link' %> (complete URL)</dt>
+				<dd class="last"><%= f.text_field :wellness_link, :size => 50, :maxlength => 250 %></dd>
+			</dl>	
+		</div>
+		<div class="clear"></div>
+	
+		<%= render :partial => 'admin/utility/publish_controls', :locals => { 
+																					:enable_publish => ( !@version.new_record? ), 
+																					:form => f,
+																					:show_revert => true } %>																				
+	<% end %>
+<% end %>

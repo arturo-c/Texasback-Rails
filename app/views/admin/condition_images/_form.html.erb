@@ -1,0 +1,20 @@
+<% form_for @image, :html => { :multipart => true } do |f| %>
+	<dl class="form">
+		<dt><%= f.label :uploaded_data, "Upload a new image" %></dt>
+		<dd><%= f.file_field :uploaded_data %></dd>
+		
+		<dt><%= f.label :small_caption %> (for display under the thumbnail image)</dt>
+		<dd><%= f.text_field :small_caption, :size => 25, :maxlength => 25 %></dd>
+		
+		<dt><%= f.label :caption, 'Full Caption' %> (for display under the full-size image)</dt>
+		<dd><%= f.text_field :caption, :size => 60, :maxlength => 250 %></dd>
+	</dl>
+
+	<p>
+		<%= f.submit 'Upload' %>
+		
+		<% unless @image.new_record? %>		
+			or <%= link_to "Cancel", condition_images_path(@condition) %>
+		<% end %>
+	</p>
+<% end %>

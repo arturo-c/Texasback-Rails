@@ -1,0 +1,89 @@
+<% content_for :sidebar do %>
+	<%= render :partial => 'admin/utility/side_nav' %>
+<% end %>
+
+<% content_for :head do %>
+	<% javascript_tag do %> 
+		document.observe('dom:loaded', function() {
+			new TabSet('tabs');
+			
+			if($('active_items')) {
+				Sortable.create('active_items', {
+					only: 'item',
+					handle: 'move',
+					onUpdate: function() {
+						$('active_save_order_button').disabled = false;
+					}
+				});
+			}
+		});		
+	<% end %>
+<% end %>
+
+<div class="left_half">
+	<h1>Add a New Location</h1>
+	<p>Prerequisites: None</p>
+	
+	<div class="button">
+		<%= link_to 'Add a New Location', new_location_path %>
+	</div>
+	
+	<h2>You will need:</h2>
+	
+	<ul class="bullets">
+		<li>Location Name</li>
+		<li>Address</li>
+		<li>Phone</li>
+		<li>Map Link</li>
+	</ul>
+	
+	<p><%= link_to 'Edit introduction copy and/or meta data for locations page.', edit_content_path('locations') %></p>
+</div>
+<div class="right_half">
+	<h1>Edit Locations</h1>
+	
+	<div class="tab_set" id="tabs">
+		<ul class="tabs">
+			<li class="selected"><a href="#">Active</a></li>
+		</ul>
+		<div class="tab_sheet selected">
+			<p>
+				<strong>Filter by state:</strong>
+				<%= link_to_if(params[:state], 'All', locations_path) %> |
+				<%= link_to_unless(params[:state] == 'AZ', 'AZ', locations_path(:state => 'AZ')) %> |
+				<%= link_to_unless(params[:state] == 'TX', 'TX', locations_path(:state => 'TX')) %>
+			</p>
+			
+			<% form_tag(order_locations_path, :id => 'order_locations_form') do %>
+				<ul class="items_list" id="active_items">
+					<li class="header">
+						<span class="name">Location</span>
+						<span class="last_mod">Last Edited</span>
+						<span class="controls">&nbsp;</span>
+						<span class="clear">&nbsp;</span>
+					</li>
+					<% @locations.each do |location| %>						
+						<li class="item" id="item_<%= location.id %>">
+							<span class="name move"><%= h location.name %></span>
+							<span class="last_mod"><%= location.updated_at.to_formatted_s(:default) %></span>
+							<span class="controls"><%= link_to 'Edit', edit_location_path(location) %></span>
+							<span class="clear">
+								<%= hidden_field_tag 'locations[]', location.id, :id => "locations_#{location.id}" %>
+							</span>
+						</li>
+					<% end %>
+				</ul>				
+				<p class="submit">
+					<%= submit_tag 'Save Order', :disabled => true, :id => 'active_save_order_button', :disable_with => 'Saving...' %>
+				</p>
+				
+				<% if params[:state] %>
+					<%= hidden_field_tag :state, params[:state] %>
+				<% end %>
+			<% end %>
+		</div>
+	</div>
+</div>
+
+<div class="clear"></div>
+

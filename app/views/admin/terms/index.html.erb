@@ -1,0 +1,105 @@
+<% content_for :sidebar do %>
+	<%= render :partial => 'admin/utility/side_nav' %>
+<% end %>
+
+<% content_for :head do %>
+	<script type="text/javascript">
+		document.observe('dom:loaded', function() {
+			new TabSet('tabs');
+			
+			[ 'narrow_group' ].each(function(element) {
+				$(element).observe('change', function() {
+					$(element).up('form').submit();
+				});
+			});
+		});		
+	</script>
+<% end %>
+
+<div class="left_half">
+	<h1>Add New Term</h1>
+	<p>Prerequisites: None</p>
+	
+	<div class="button">
+		<%= link_to 'Add Term', new_term_path %>
+	</div>
+	
+	<h2>You will need:</h2>
+	
+	<ul class="bullets">
+		<li>Term</li>
+		<li>Definition</li>
+	</ul>
+	
+	<p><%= link_to 'Edit introduction copy and/or meta data for default glossary page.', edit_content_path('glossary') %></p>
+</div>
+<div class="right_half">
+	<h1>Edit Terms</h1>
+	
+	<div class="tab_set" id="tabs">
+		<ul class="tabs">
+			<li class="selected"><a href="#">Active</a></li>
+			<li><a href="#">Inactive</a></li>
+		</ul>
+		<div class="tab_sheet selected">		
+			<% form_tag '/admin/terms', :method => :get do %>
+				<div class="filters">
+					<div>Show</div>
+					<div>						
+						<%= select_tag 'group', options_for_select(@groups.collect{ |t| [ t.name, t.id.to_s ] }.unshift([ "All Terms", "" ]), params[:group]), :id => 'narrow_group' %>
+					</div>
+				</div>
+			<% end %>
+			
+			<% if @active.length > 0 %>
+				<ul class="items_list" id="active_items">
+					<li class="header">
+						<span class="name">Term</span>
+						<span class="last_mod">Last Edited</span>
+						<span class="controls">&nbsp;</span>
+						<span class="clear">&nbsp;</span>
+					</li>
+					<% @active.each do |item| %>						
+						<li class="item<%= ' draft' if item.has_unpublished? %>" id="item_<%= item.id %>">
+							<span class="name"><%= truncate(h(item.name)) %><%= '*' if item.has_unpublished? %></span>
+							<span class="last_mod"><%= item.updated_at.to_formatted_s(:default) %></span>
+							<span class="controls"><%= link_to 'Edit', edit_term_path(item) %></span>
+							<span class="clear">&nbsp;</span>
+						</li>
+					<% end %>
+				</ul>
+				<%= will_paginate @active %>
+				
+				<p class="submit"><span class="draft smaller">* Denotes saved, unpublished version.</span></p>		
+			<% else %>
+				<p class="submit">There are no active glossary terms.</p>
+			<% end %>
+		</div>
+		<div class="tab_sheet">
+			<% if @inactive.length > 0 %>
+					<ul class="items_list" id="inactive_items">
+						<li class="header">
+							<span class="name">Term</span>
+							<span class="last_mod">Last Edited</span>
+							<span class="controls">&nbsp;</span>
+							<span class="clear">&nbsp;</span>
+						</li>
+						<% @inactive.each do |item| %>						
+							<li class="item<%= ' draft' if item.has_unpublished? %>" id="item_<%= item.id %>">
+								<span class="name"><%= truncate(h(item.name)) %><%= '*' if item.has_unpublished? %></span>
+								<span class="last_mod"><%= item.updated_at.to_formatted_s(:default) %></span>
+								<span class="controls"><%= link_to 'Edit', edit_term_path(item) %></span>
+								<span class="clear">&nbsp;</span>
+							</li>
+						<% end %>
+					</ul>				
+					
+					<p class="submit"><span class="draft smaller">* Denotes saved, unpublished version.</span></p>
+			<% else %>
+				<p class="submit">There are no inactive glossary terms.</p>
+			<% end %>
+		</div>
+	</div>
+</div>
+
+<div class="clear"></div>

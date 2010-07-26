@@ -1,0 +1,68 @@
+<% if version.has_bio? %>
+	<div class="bio">
+		<% unless version.photo_path.blank? %>
+			<%= image_tag version.photo_path, :alt => h(doctor.full_name), :class => 'photo' %>	
+		<% end %>
+
+		<h3 id="<%= doctor.slug %>"><%= h doctor.full_name %></h3>	
+		
+		<% if doctor.locations.length > 0 or doctor.specialty or version.fellowship or (!version.certifications.blank?) or (!version.awards.blank?) %>
+			<dl>
+				<% if doctor.locations.length > 0 %>
+					<dt><%= pluralize(doctor.locations.length, 'Practicing Location')%>:</dt>
+					<dd><%= doctor.locations.collect { |l| link_to(h(l.name_and_state), h(l.map_link), :target => '_blank') }.to_sentence %></dd>
+				<% end %>
+				
+				<% unless version.quote.blank? %>
+					<dt>Personal Quote:</dt>
+					<dd><%= rich_format version.quote %></dd>
+				<% end %>
+		
+				<% if doctor.specialty %>
+					<dt>Specialty:</dt>
+					<dd><%= h doctor.specialty.name %></dd>
+				<% end %>
+		
+				<% if version.fellowship %>
+					<dt>Fellowship Training:</dt>
+					<dd><%= h version.fellowship.name %></dd>
+				<% end %>
+		
+				<% unless version.certifications.blank? %>
+					<dt>Certification:</dt>
+					<dd><%= rich_format version.certifications %></dd>
+				<% end %>		
+				
+				<% unless version.education.blank? %>
+					<dt>Education:</dt>		
+					<dd><%= rich_format version.education %></dd>
+				<% end %>
+			
+				<% unless version.awards.blank? %>
+					<dt>Awards/Recognition:</dt>		
+					<dd><%= rich_format version.awards %></dd>
+				<% end %>
+				
+				<% if doctor.has_publications? %>
+					<dt><%= h TbiConfig[:publications_label] %></dt>
+					<dd>
+						<%= h(TbiConfig[:publications_intro]).gsub("[[doctor_name]]", "#{h(doctor.name.strip)}'s") %>
+						<%= link_to "click here", doctor.publications_file, :target => '_blank' %>.
+					</dd>
+				<% end %>
+			</dl>
+		<% end %>
+		
+		<% unless version.full_description.blank? %>
+			<%= rich_format version.full_description %>
+		<% end %>
+	
+		<% unless @hide_anchors %>
+			<p class="top"><a href="#">Back to top</a></p>
+		<% else %>
+			<p class="top"><%= link_to 'View all of Our Doctors and Staff &raquo;', doctors_list_path %></p>
+		<% end %>
+	</div>
+<% else %>
+	<h5 id="<%= doctor.slug %>"><%= h doctor.full_name %></h5>
+<% end %>

@@ -1,0 +1,9 @@
+<li>
+	<%= h press_release.release_date.to_formatted_s(:long_date) %>
+	&ndash;
+	<% if press_release.has_file? %>
+		<%= link_to(press_release.name, press_release.file_name, :target => '_blank') %>
+	<% else %>
+		<%= h press_release.name %>
+	<% end %>
+</li>

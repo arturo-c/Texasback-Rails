@@ -1,0 +1,36 @@
+<div id="condition_images">
+	<% if @event.has_images? %>
+		<% count = 1 %>
+		<% @event.images.each_with_index do |image, index| %>
+			<% unless image.new_record? %>
+				<% content_tag_for(:div, image, :class => 'condition_image') do %>
+					<%= link_to(image_tag(image.public_filename(:thumb), :alt => h(image.caption)), image.public_filename(:cropped), :class => 'image', :title => h(image.caption), :target => '_blank', :rel => 'tbi') %>
+
+					<div class="controls">					
+						<% if editable %>						
+							<p class="remove">
+								<%= link_to 'Edit', edit_event_image_path(@event, image) %> | 
+								
+								<%= link_to_remote "Remove", :url => event_image_path(@event, image), :method => 'DELETE', :confirm => "Are you sure you want to remove this image?", :complete => after_remove_event_image(image), :loading => on_remove_event_image(image) %>
+							</p>
+						<% else %>
+							<p>
+								<%= check_box_tag "event[draft_version_attributes][images][]", image.id, @version.image_ids.include?(image.id), :id => "images_#{image.id}" %>
+								<%= label_tag "images_#{image.id}", "Visible" %>
+							</p>
+						<% end %>
+					</div>
+				<% end %>
+
+				<% if count % 5 == 0 %>
+					<div class="clear"></div>
+					<% count = 1 %>
+				<% else %>
+					<% count = count + 1 %>
+				<% end %>
+			<% end %>
+		<% end %>
+	<% end %>
+</div>
+
+<div class="clear"></div>

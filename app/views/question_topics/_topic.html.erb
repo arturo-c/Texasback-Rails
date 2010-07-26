@@ -1,0 +1,9 @@
+<h2>Ask the Doctor</h2>
+
+<% if @questions.length > 0 %>
+	<% @questions.each do |question| %>
+		<%= render :partial => 'questions/question', :locals => { :question => question, :version => question.published } %>
+	<% end %>
+<% else %>
+	<p>There are no Q&amp;A questions for this topic yet.</p>
+<% end %>

@@ -1,0 +1,26 @@
+<div id="breadcrumbs">
+	<%= link_to 'Home', admin_path %> &gt; <%= link_to 'Doctors and Staff', doctors_path %> &gt; Edit Publications Labels
+</div>
+
+<h1>Edit Publication Labels</h1>
+<% form_tag config_doctors_path do %>
+	<% if @error %>
+		<div id="error" class="error">
+			<h2>Please correct the following issues to continue</h2>
+			
+			<ul>
+				<li>Publications Label cannot be blank</li>
+			</ul>
+		</div>
+	<% end %>
+
+	<dl class="form">
+		<dt><%= label_tag 'publications_label', 'Publications Label' %></dt>
+		<dd><%= text_field_tag 'publications_label', @label, :size => 30, :maxlength => 250 %></dd>
+	
+		<dt><%= label_tag 'publications_intro', 'Publications Introduction' %></dt>
+		<dd><%= text_field_tag 'publications_intro', @intro, :size => 60, :maxlength => 500 %></dd>
+	</dl>
+	
+	<p><%= submit_tag 'Save' %></p>
+<% end %>

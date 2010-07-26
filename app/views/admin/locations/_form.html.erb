@@ -1,0 +1,41 @@
+<%= show_errors_for :location %>
+
+<% form_for @location do |f| %>
+	<dl class="form">
+		<dt><%= f.label :name, 'Location Name' %></dt>
+		<dd><%= f.text_field :name, :size => 40, :maxlength => 250 %></dd>
+		
+		<dt><%= f.label :address, 'Address Line 1' %></dt>
+		<dd><%= f.text_field :address, :size => 50, :maxlength => 250 %></dd>
+		
+		<dt><%= f.label :address2, 'Address Line 2' %></dt>
+		<dd><%= f.text_field :address2, :size => 50, :maxlength => 250 %></dd>
+		
+		<dt><%= f.label :city, 'City' %></dt>
+		<dd><%= f.text_field :city, :size => 20, :maxlength => 250 %></dd>
+		
+		<dt><%= f.label :state, 'State' %></dt>
+		<dd><%= select :location, :state, [[ "", "" ], [ "Arizona", "AZ" ], [ "Texas", "TX" ]] %></dd>
+		
+		<dt><%= f.label :zip, 'Zip' %></dt>
+		<dd><%= f.text_field :zip, :size => 8, :maxlength => 10 %></dd>
+		
+		<dt><%= f.label :phone, 'Phone' %></dt>
+		<dd><%= f.text_field :phone, :size => 25, :maxlength => 25 %></dd>
+		
+		<dt><%= f.label :map_link, 'External Map Link' %> (this will be used when &#8216;Get Directions&#8217; link is clicked from a location)</dt>
+		<dd><%= f.text_field :map_link, :size => 50, :maxlength => 250 %></dd>
+		
+		<dt><label>Locations Page Map Point</label></dt>
+		<dd>
+			<p>Drag the marker on the map and drop it where you want the location to be displayed.  (This is only used on the <a href="/locations" target="_blank">locations page</a> to find a location.)</p>
+
+			<div id="map_point_editor"></div>
+			
+			<%= f.hidden_field :latitude %>
+			<%= f.hidden_field :longitude %>
+		</dd>
+	</dl>
+	
+	<p class="submit"><%= f.submit "Save Location" %></p>
+<% end %>

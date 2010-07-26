@@ -1,0 +1,86 @@
+<% content_for :head do %>
+  <style type="text/css">
+  div.home_page_image {
+    width: 115px;
+    height: 170px;
+    margin: 10px;
+    float: left;
+    padding: 10px;
+    background: #ededed;
+    border: 1px solid #ccc;
+    text-align: center;
+    line-height: 16px;
+  }
+  
+  div.home_page_image div {
+    margin-bottom: 10px;
+  }
+  
+  div.active_image {
+    margin-bottom: 20px;
+  }
+  
+  </style>
+  <script type="text/javascript">
+  document.observe('dom:loaded', function() {
+    $('home_images').observe('click', function(event) {
+      var el = Event.element(event);
+      
+      if(el.nodeName == 'A' && el.hasClassName('remove')) {
+        if(confirm('Are you sure you want to remove this image?')) {
+          var photo = el.up('div.home_page_image');
+          var id = photo.id.split('_')[3];
+          
+          new Effect.Fade(photo, { afterFinish: function() { photo.remove(); }});
+          
+          new Ajax.Request('/admin/home_page_images/' + id, {
+            parameters: { _method: 'DELETE', authenticity_token: "<%= auth_token %>" }
+          });
+        }
+        
+        event.stop();
+      }
+    });
+  });
+  </script>
+<% end %>
+
+<div id="breadcrumbs">
+	<%= link_to 'Home', admin_path %> &gt; <%= link_to 'Home Page', edit_home_page_path %> &gt; Manage Home Page Images
+</div>
+
+<h1>Manage Home Page Images</h1>
+
+<%= show_errors_for :image %>
+
+<div id="home_images">
+  <% @images.each do |image| %>
+    <% content_tag_for(:div, image) do %>
+      <div><%= image_tag(image.public_filename, :alt => h(image.caption)) %></div>
+      <% if image.in_use? %>
+        <strong><%= home_page_image_name(image.slot) %></strong><br />(<%= link_to 'Change', change_home_slot_path(:slot => image.slot) %>)
+      <% else %>
+        Not In Use<br />
+        <a href="#" class="remove">Remove</a>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
+
+<div class="clear"></div>
+
+<div style="margin:10px;">
+
+<%= show_errors_for :image %>
+
+<% form_for @image, :html => { :multipart => true } do |f| %>
+	<dl class="form">
+		<dt><%= f.label :uploaded_data, "Upload a new image" %></dt>
+		<dd><%= f.file_field :uploaded_data %></dd>
+	</dl>
+
+	<p>
+		<%= f.submit 'Upload' %>
+	</p>
+<% end %>
+</div>

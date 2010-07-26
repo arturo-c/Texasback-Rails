@@ -1,0 +1,38 @@
+<% content_for :secondary do %>
+	<% @types.each do |type| %>
+		<% if type.has_published_treatments? %>
+			<h3><%= h type.name %></h3>
+			
+			<ul>
+				<% type.published_treatments.each do |treatment| %>
+					<li>
+						<% if treatment == @treatment %>
+							<%= h treatment.name %>
+						<% else %>
+							<%= link_to h(treatment.name), view_treatment_path(:slug => treatment.slug) %>
+						<% end %>						
+					</li>
+				<% end %>
+				
+				<% type.children.each do |child_type| %>
+					<% if child_type.has_published_treatments? %>
+						<li>
+							<h4><%= h child_type.name %></h4>
+							<ul>
+								<% child_type.published_treatments.each do |child_treatment| %>
+									<li>
+										<% if child_treatment == @treatment %>
+											<%= h child_treatment.name %>
+										<% else %>
+											<%= link_to h(child_treatment.name), view_treatment_path(:slug => child_treatment.slug) %>
+										<% end %>
+									</li>
+								<% end %>
+							</ul>
+						</li>
+					<% end %>
+				<% end %>
+			</ul>
+		<% end %>
+	<% end %>
+<% end %>

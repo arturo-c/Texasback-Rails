@@ -1,0 +1,77 @@
+<% content_for :sidebar do %>
+	<%= render :partial => 'admin/utility/side_nav' %>
+<% end %>
+
+<% content_for :head do %>
+	<script type="text/javascript">
+		document.observe('dom:loaded', function() {
+			new TabSet('tabs');
+			
+			if($('active_items')) {
+				Sortable.create('active_items', {
+					only: 'item',
+					handle: 'move',
+					onUpdate: function() {
+						$('active_save_order_button').disabled = false;
+					}
+				});
+			}
+		});		
+	</script>
+<% end %>
+
+<div class="left_half">
+	<h1>Add Page</h1>
+	<p>Prerequisites: None</p>
+	
+	<div class="button">
+		<%= link_to 'Add a New About Us Page', new_about_page_path %>
+	</div>
+	
+	<h2>You will need:</h2>
+	
+	<ul class="bullets">
+		<li>Body copy</li>
+		<li>Meta Data</li>
+	</ul>
+	
+	<p><%= link_to 'Edit About Us page', edit_content_path('about_us') %></p>
+</div>
+<div class="right_half">
+	<h1>Edit Page Order</h1>
+	
+	<div class="tab_set" id="tabs">
+		<ul class="tabs">
+			<li class="selected"><a href="#">Active</a></li>
+		</ul>
+		<div class="tab_sheet selected" id="about_pages">			
+			<% if @active.length > 0 %>
+				<% form_tag order_about_pages_path do %>
+					<ul class="items_list" id="active_items">
+						<li class="header">
+							<span class="name">Page Name</span>
+							<span class="controls">&nbsp;</span>
+							<span class="clear">&nbsp;</span>
+						</li>
+						<% @active.each do |item| %>						
+							<li class="item" id="item_<%= item.id %>">
+								<span class="move"><%= truncate(h(item.name), 45) %></span>
+								<span class="controls">&nbsp;</span>
+								<span class="clear">
+									<%= hidden_field_tag 'about_pages[]', item.id, :id => "page_#{item.id}" %>
+								</span>
+							</li>
+						<% end %>
+					</ul>				
+					<p class="submit">
+						<%= submit_tag 'Save Order', :disabled => true, :id => 'active_save_order_button', :disable_with => 'Saving...' %>
+					</p>
+				<% end %>
+			<% else %>
+				<p class="submit">There are no About Us pages.</p>
+			<% end %>
+		</div>
+	</div>
+</div>
+
+<div class="clear"></div>

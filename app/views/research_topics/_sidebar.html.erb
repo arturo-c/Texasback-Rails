@@ -1,0 +1,18 @@
+<% content_for :secondary do %>
+	<h3>Recent Articles by Topic</h3>
+
+	<ul>
+		<% @topics.each do |topic| %>
+			<% if @topic == topic %>
+				<li><%= h(topic.name) %></li>
+			<% else %>
+				<% if topic.has_published_abstracts? %>
+					<li>
+						<%= link_to h(topic.name.strip), view_research_topic_path(:slug => topic.slug) %>
+						<span class="count">(<%= topic.published_abstracts.length %>)</span>
+					</li>
+				<% end %>
+			<% end %>
+		<% end %>
+	</ul>
+<% end %>

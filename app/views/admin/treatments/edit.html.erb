@@ -1,0 +1,17 @@
+<% content_for :head do %>
+	<script type="text/javascript">
+	document.observe('dom:loaded', function() {
+		$('treatment_name').activate();
+	
+		new SlugMaker('treatment_name', 'treatment_slug');		
+	});
+	</script>
+<% end %>
+
+<div id="breadcrumbs">
+	<%= link_to 'Home', admin_path %> &gt; <%= link_to 'Treatments', treatments_path %> &gt; Edit Treatment
+</div>
+
+<h1>Edit Treatment</h1>
+
+<%= render :partial => 'form' %>

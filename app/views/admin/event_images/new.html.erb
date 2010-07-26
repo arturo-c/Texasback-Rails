@@ -1,0 +1,9 @@
+<div id="breadcrumbs">
+	<%= link_to 'Home', admin_path %> &gt; <%= link_to 'Events', events_path %> &gt; <%= link_to h(@event.name), edit_event_path(@event) %> &gt; <%= link_to 'Add/Edit Image Attachments', event_images_path(@event) %> &gt; Add Image
+</div>
+
+<h1>Add <%= h @event.name %> Image</h1>
+
+<%= show_errors_for :image %>
+
+<%= render :action => 'form' %>

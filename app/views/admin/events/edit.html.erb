@@ -1,0 +1,38 @@
+<% content_for :head do %>
+	<%= javascript_include_tag '/_js/jquery.min.js', '/_js/jquery.fancybox.js', '/_js/jquery.pngFix.pack.js' %>
+
+	<script type="text/javascript">
+	jQuery.noConflict();
+
+	jQuery(document).ready(function($){
+		$('div.condition_image a.image').each(function() {
+			$(this).fancybox();
+		});
+	});
+	
+	document.observe('dom:loaded', function() {
+		$('event_name').activate();
+		
+		$('event_form').observe('submit', function(event) {
+			var hour = parseInt($F('event_hour'));
+			var amPm = $F('event_ampm');
+			
+			if(amPm == "PM" && hour < 12) hour = hour + 12;
+			
+			if(hour == 12 && amPm == "AM") hour = 0;
+			
+			$('event_event_date_4i').value = hour;
+			
+			new TextAreaLimiter('event_draft_version_attributes_short_description', 300);
+		});
+	});
+	</script>
+<% end %>
+
+<div id="breadcrumbs">
+	<%= link_to 'Home', admin_path %> &gt; <%= link_to 'Events', events_path %> &gt; Edit Event
+</div>
+
+<h1>Edit Event</h1>
+
+<%= render :partial => 'form' %>

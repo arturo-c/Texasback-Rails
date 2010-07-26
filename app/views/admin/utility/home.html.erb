@@ -1,0 +1,104 @@
+<% content_for :sidebar do %>
+	<%= render :partial => 'admin/utility/side_nav' %>
+<% end %>
+
+<% content_for :head do %>
+	<%= javascript_include_tag "transitions" %>
+<% end %>
+
+<h1>Home</h1>
+
+<p>Welcome to the Texas Back Institute Website Administration section.</p>
+
+<h2>Export Form Results</h2>
+
+<div id="questions_export" class="form_block" style="display:none;">
+		<% form_tag(formatted_export_questions_path(:format => 'xls'), :method => :get) do %>
+			<h3>Export the Ask the Doctor Results</h3>
+			
+			<p>
+				Show results from 
+				<%= date_select "question_export", "from", :order => [ :month, :day, :year ], :default => DateTime.new(2009, 1, 1) %>
+				to
+				<%= date_select "question_export", "to", :order => [ :month, :day, :year ], :default => Date.today %>
+			</p>
+			
+			<p class="submit"><%= submit_tag "Export", :name => nil %> or <%= link_to_function 'Cancel', crossfade(:questions_export, :export_row) %></p>
+		<% end %>
+</div>
+
+<div id="contacts_export" class="form_block" style="display:none;">
+		<% form_tag(contact_export_path(:format => 'xls'), :method => :get) do %>
+			<h3>Export the Contact Form Results</h3>
+			
+			<p>
+				Show results from 
+				<%= date_select "contacts_export", "from", :order => [ :month, :day, :year ], :default => DateTime.new(2009, 1, 1) %>
+				to
+				<%= date_select "contacts_export", "to", :order => [ :month, :day, :year ], :default => Date.today %>
+			</p>
+					
+			<p class="submit"><%= submit_tag "Export", :name => nil %> or <%= link_to_function 'Cancel', crossfade(:contacts_export, :export_row) %></p>
+		<% end %>
+</div>
+
+<p id="export_row">
+	Export the <%= link_to_function "Ask the Doctor", crossfade(:export_row, :questions_export) %>
+	or
+	<%= link_to_function "Contact Form", crossfade(:export_row, :contacts_export) %>
+	results to excel.
+</p>
+
+<% if @conditions.length > 0 or @treatments.length > 0 or @testimonials.length > 0 %>
+	<h2>Saved Content</h2>
+
+	<p>These items have been edited and saved, but the changes are not yet published.</p>
+
+	<% if @conditions.length > 0 %>
+		<h3>Conditions</h2>
+
+		<table>
+			<tbody>
+				<% @conditions.each do |condition| %>
+					<tr>
+						<th scope="row"><%= h condition.name %>*</th>
+						<td><%= condition.updated_at.to_formatted_s(:default) %></td>
+						<td><%= link_to 'Edit', edit_condition_path(condition) %></td>
+					</tr>
+				<% end %>		
+			</tbody>
+		</table>	
+	<% end %>
+
+	<% if @treatments.length > 0 %>
+		<h3>Treatments</h2>
+	
+		<table>
+			<tbody>
+				<% @treatments.each do |treatment| %>
+					<tr>
+						<th scope="row"><%= h treatment.name %>*</th>
+						<td><%= treatment.updated_at.to_formatted_s(:default) %></td>
+						<td><%= link_to 'Edit', edit_treatment_path(treatment) %></td>
+					</tr>
+				<% end %>		
+			</tbody>
+		</table>
+	<% end %>
+
+	<% if @testimonials.length > 0 %>
+		<h3>Testimonials</h2>
+	
+		<table>
+			<tbody>
+				<% @testimonials.each do |testimonial| %>
+					<tr>
+						<th scope="row"><%= h testimonial.name %>*</th>
+						<td><%= testimonial.updated_at.to_formatted_s(:default) %></td>
+						<td><%= link_to 'Edit', edit_testimonial_path(testimonial) %></td>
+					</tr>
+				<% end %>		
+			</tbody>
+		</table>
+	<% end %>
+<% end %>

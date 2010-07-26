@@ -1,0 +1,9 @@
+<%= render :partial => 'about_pages/sidebar' %>
+
+<%= rich_format @faqs_page.part_content('body') %>
+
+<% @faqs.each do |faq| %>
+	<h3 class="tight">Q: <strong><%= h faq.published.question %></strong></h3>
+	
+	<%= rich_format faq.published.answer %>
+<% end %>

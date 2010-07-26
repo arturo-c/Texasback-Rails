@@ -1,0 +1,22 @@
+<%= render :partial => 'admin/utility/preview_bar', :locals => { 
+																		:preview_path => "Glossary Term: #{truncate(@term.name)}",
+																		:button_link => edit_term_path(params[:id]) } %>
+
+<%= render :partial => 'about_pages/sidebar' %>
+
+<%= rich_format @glossary_page.part_content('body') %>
+
+<p>
+	<% @groups.each_with_index do |group, index| %>
+		<% if group.has_published_terms? %>
+			<%= "|" unless index == 0 %>
+			<a href="#gr<%= group.id %>"><%= group.name %></a>
+		<% end%>		
+	<% end %>
+</p>
+
+<h3><%= @term.term_group.name %></h3>
+
+<h4><%= @term.name %></h4>
+
+<%= rich_format @version.definition %>

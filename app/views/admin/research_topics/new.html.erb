@@ -1,0 +1,17 @@
+<% content_for :head do %>
+	<script type="text/javascript">
+	document.observe('dom:loaded', function() {
+		$('research_topic_name').activate();
+		
+		new SlugMaker('research_topic_name', 'research_topic_slug');
+	});
+	</script>
+<% end %>
+
+<div id="breadcrumbs">
+	<%= link_to 'Home', admin_path %> &gt; <%= link_to 'Research', abstracts_path %> &gt; <%= link_to 'Topics', research_topics_path %> &gt; Add Topic
+</div>
+
+<h1>Add Topic</h1>
+
+<%= render :partial => 'form' %>

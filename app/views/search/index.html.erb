@@ -1,0 +1,51 @@
+<h2>Your Search Results</h2>
+
+<% unless @has_exactas or @has_others %>
+	<p>There were no conditions or treatments found for your search.</p>
+	
+	<ul>
+		<li><%= link_to 'View all Conditions &raquo;', conditions_list_path %></li>
+		<li><%= link_to 'View all Treatments &raquo;', treatments_list_path %></li>			
+	</ul>
+<% end %>
+
+<% if @has_exactas %>
+	<h3 class="tight">Exact Matches for &#8220;<%= h params[:q] %>&#8221;</h3>
+	
+	<% @exact_conditions.each do |condition| %>
+		<%= rich_format(truncate(condition.published.full_description, 400)) %>
+		
+		<br /><%= link_to('Learn More&raquo;', view_condition_path(:slug => condition.slug)) %>
+	<% end %>
+	
+	<% @exact_treatments.each do |treatment| %>
+		<%= rich_format(truncate(treatment.published.full_description, 400)) %>
+		
+		<br /><%= link_to('Learn More&raquo;', view_treatment_path(:slug => treatment.slug)) %>
+	<% end %>
+<% end %>
+
+<% if @has_others %>
+	<h3 class="tight"><%= "Other " if @has_exactas %>Possible Matches for &#8220;<%= h params[:q] %>&#8221;</h3>
+	
+	<% if @other_conditions.length > 0 %>
+		<h4 class="tight"><%= pluralize(@other_conditions.length, "Condition") %></h4>
+		
+		<ul>
+			<% @other_conditions.each do |condition| %>
+				<li><%= link_to(h(condition.name), view_condition_path(:slug => condition.slug)) %></li>
+			<% end %>
+		</ul>
+	<% end %>
+	
+	<% if @other_treatments.length > 0 %>
+		<h4 class="tight"><%= pluralize(@other_treatments.length, "Treatment") %></h4>
+		
+		<ul>
+			<% @other_treatments.each do |treatment| %>
+				<li><%= link_to(h(treatment.name), view_treatment_path(:slug => treatment.slug)) %></li>
+			<% end %>
+		</ul>
+	<% end %>
+<% end %>
+

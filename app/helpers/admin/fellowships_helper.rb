@@ -1,0 +1,2 @@
+module Admin::FellowshipsHelper
+end

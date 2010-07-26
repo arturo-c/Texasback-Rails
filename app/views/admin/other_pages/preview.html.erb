@@ -1,0 +1,5 @@
+<%= render :partial => 'admin/utility/preview_bar', :locals => { 
+																		:preview_path => "http://texasback.com#{h(@page.url)}",
+																		:button_link => edit_other_page_path(params[:id]) } %>
+
+<%= @page_version.body_content %>

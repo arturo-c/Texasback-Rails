@@ -1,0 +1,9 @@
+<div id="breadcrumbs">
+	<%= link_to 'Home', admin_path %> &gt; <%= link_to 'Conditions', conditions_path %> &gt; <%= link_to h(@condition.name), edit_condition_path(@condition) %> &gt; <%= link_to 'Add/Edit Image Attachments', condition_images_path(@condition) %> &gt; Add Image
+</div>
+
+<h1>Add <%= h @condition.name %> Image</h1>
+
+<%= show_errors_for :image %>
+
+<%= render :action => 'form' %>

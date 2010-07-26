@@ -1,0 +1,11 @@
+<%= render :partial => 'sidebar' %>
+
+<%= rich_format @treatments_page.part_content('body') %>
+
+<%= rich_format @diagnostics_page.part_content('body') %>
+
+<ul>
+	<% @diagnostics.each do |d| %>
+		<li><%= link_to(h(d.name), view_diagnostic_path(:slug => d.slug)) %></li>	
+	<% end %>
+</ul>

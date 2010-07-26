@@ -1,0 +1,7 @@
+<%= render :partial => 'admin/utility/preview_bar', :locals => { 
+																		:preview_path => "http://texasback.com#{h(@draft_version.page.url)}",
+																		:button_link => edit_content_path(:slug => params[:slug]) } %>
+
+<%= rich_format @draft_version.body_content %>
+
+<%= render :partial => 'hotels/list' %>

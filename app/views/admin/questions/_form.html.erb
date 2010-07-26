@@ -1,0 +1,47 @@
+<%= show_errors_for :question %>
+
+<% form_for @question do |a| %>
+	<% fields_for "question[draft_version_attributes]", @version do |v| %>
+		<div class="left_half" style="width:65%;">
+			<p><%= a.label :slug, 'URL:' %> http://texasback.com/ask_the_doctor/questions/<%= a.text_field :slug, :maxlength => 40, :size => 20 %></p>	
+	
+			<dl class="form">
+				<dt><%= v.label :the_question, 'Question' %></dt>
+				<dd><%= v.text_area :the_question, :cols => 60, :rows => 4, :class => 'full' %></dd>
+				
+				<dt><%= v.label :short_answer, 'Abbreviated Answer' %></dt>
+				<dd><%= v.text_area :short_answer, :cols => 60, :rows => 4, :class => 'full' %></dd>
+			
+				<dt><%= v.label :the_answer, 'Answer' %></dt>
+				<dd><%= v.rich_text :the_answer, :small => true %></dd>
+			</dl>
+		</div>
+		<div class="right_half" style="width:32%">
+			<p<%= @question.errors.invalid?(:topic_ids) ? ' class="error_inline"' : '' %>><strong>Topic(s)</strong> Choose all that apply</p>
+			
+			<ul class="check_list" style="margin-bottom: 10px;">
+				<%= render :partial => 'admin/question_topics/topic', :collection => @topics %>
+				
+				<li class="action" id="add_topic_link_row">
+					<%= link_to_function 'Add Topic', add_topic_link %>
+				</li>
+				<li class="edit action" id="add_topic_field_row" style="display:none;">
+					<%= text_field_tag 'new_topic_name', '', :size => 25, :maxlength => '200', :onkeydown => ignore_enter_key %><br />
+					<span class="controls"><%= button_to_function 'Add', add_topic_button %> or <%= link_to_function 'Cancel', cancel_add_topic %></span>
+					<span class="loading" style="display:none;">Adding&#8230;</span>
+				</li>
+			</ul>			
+		</div>
+		
+		<div class="clear"></div>
+		
+		<%= render :partial => 'admin/utility/meta_form', :locals => { :form => v, :affects => 'Affects this Q&amp;A only' } %>		
+	<% end %>
+	
+	<p class="checkbox"><%= a.check_box :active_flag %> <%= a.label :active_flag, 'Make this Q&amp;A active' %></p>
+
+	<%= render :partial => 'admin/utility/publish_controls', :locals => { 
+																				:enable_publish => ( !@version.new_record? ), 
+																				:form => a,
+																				:show_revert => (@question.has_published?) } %>
+<% end %>

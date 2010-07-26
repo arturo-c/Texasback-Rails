@@ -1,0 +1,118 @@
+<% content_for :head do %>
+	<script type="text/javascript">
+	$(function() {
+		$('div#email_form form').submit(function() {
+			if(!validate()) {
+				return false;
+			}
+			else if(!$("#terms_check").attr('checked')) {
+				alert('You must agree to the terms and conditions.');
+				return false;
+			}
+		});
+		
+		$('#add_another').click(function() {
+			var block = $('#friends_block');			
+			var id = block.find('input.emails').length + 1;			
+			
+			var newRow = '<dl>' + 
+									 '<dt><label for="friend_name_' + id + '">Name</label></dt>' + 
+									 '<dd><input class="names" id="friend_name_' + id + '" name="friend_names[]" type="text" value="" /></dd>' +
+									 '</dl>' + 
+									 '<dl>' + 
+									 '<dt><label for="friend_email_' + id + '">Email Address</label>*</dt>' + 
+									 '<dd><input class="emails" id="friend_email_' + id + '" name="friend_emails[]" type="text" value="" /></dd>' + 
+									 '</dl><div class="clear"></div>';	
+									
+			block.append(newRow);
+				
+			$('#friend_header').html('Your Friends');
+				
+			return false;
+		});
+	});
+	
+	function validate() {
+		var valid = true;
+		var msg = "Please correct the following issues to continue:\n\n";		
+		
+		if($('#my_name').val().blank()) {
+			msg += "  - Your name must be entered.\n";
+			valid = false;
+		}
+		
+		if($('#my_email').val().blank()) {
+			msg += "  - Your email address must be entered.\n";
+			valid = false;
+		}
+		
+		var hasAFriend = false;
+		
+		$('#email_form input.emails').each(function() {
+			if(!$(this).val().blank()) hasAFriend = true;
+		});
+		
+		if(!hasAFriend) {
+			msg += "  - You must enter a friend's email address.\n";
+			valid = false;
+		}
+		
+		if(!valid) {
+			alert(msg);
+		}
+		
+		return valid;
+	}
+	</script>
+<% end %>
+
+<h1>Email a Friend</h1>
+
+<p>Send a link to <%= view_condition_url(:slug => params[:slug])%></p>
+
+<p>Fields marked with * are required.</p>
+
+<div id="email_form">
+	<% form_tag email_friend_process_path do |f| %>
+		<h2>You</h2>
+	
+		<div class="block">
+			<dl>
+				<dt><label for="my_name">Name</label>*</dt>
+				<dd><%= text_field_tag 'my_name' %></dd>
+			</dl>
+			<dl>
+				<dt><label for="my_email">Email Address</label>*</dt>
+				<dd><%= text_field_tag 'my_email' %></dd>
+			</dl>
+			
+			<div class="clear"></div>
+		</div>
+		
+		<h2 id="friend_header">Your Friend</h2>
+		
+		<div class="block" id="friends_block">
+			<dl>
+				<dt><label for="friend_name_1">Name</label></dt>
+				<dd><%= text_field_tag 'friend_names[]', '', :id => 'friend_name_1', :class => 'names' %></dd>
+			</dl>
+			<dl>
+				<dt><label for="friend_email_1">Email Address</label>*</dt>
+				<dd><%= text_field_tag 'friend_emails[]', '', :id => 'friend_email_1', :class => 'emails' %></dd>
+			</dl>
+			<div class="clear"></div>
+		</div>
+		
+		<p><a href="#" id="add_another">Add another friend</a></p>
+		
+		<div class="checkbox_terms">
+			<%= check_box_tag 'terms_check', '1', false %>	
+			<span class="checkline">						
+				<label for="terms_check">I agree to the</label> <a href="/terms_and_conditions" onclick="window.open(this.href, '_newblank', 'toolbar=yes,location=yes,directories=yes,resizable=yes,scrollbars=yes'); return false;">terms and conditions</a>
+			</span>
+			<div class="clear"></div>
+		</div>
+		
+		<p class="submit"><%= submit_tag 'Submit' %></p>
+	<% end %>
+</div>

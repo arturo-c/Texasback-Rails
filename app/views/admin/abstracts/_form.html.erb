@@ -1,0 +1,76 @@
+<%= show_errors_for :abstract %>
+
+<% form_for @abstract do |a| %>
+	<% fields_for "abstract[draft_version_attributes]", @version do |v| %>
+		<div class="left_half" style="width:65%;">
+			<dl class="form">
+				<dt><%= a.label :name, 'Article Name' %></dt>
+				<dd><%= a.text_field :name, :size => 40, :maxlength => 250 %></dd>				
+			</dl>
+
+			<p><%= a.label :slug, 'URL:' %> http://texasback.com/research/articles/<%= a.text_field :slug, :maxlength => 40, :size => 20 %></p>	
+	
+			<dl class="form">
+				<dt><%= a.label :link, 'Link' %></dt>
+				<dd><%= a.text_field :link, :size => 60, :maxlength => 250 %></dd>
+		
+				<dt><%= a.label :publish_date, 'Date Published' %></dt>
+				<dd>
+					<%= hidden_field_tag 'abstract[publish_date(3i)]', '1', :id => 'abstract_publish_date_3i' %>
+					<%= select_month @abstract.publish_date, {}, :name => 'abstract[publish_date(2i)]', :id => 'abstract_publish_date_2i' %>
+					<%= text_field_tag 'abstract[publish_date(1i)]', @abstract.publish_year, :id => 'abstract_publish_date_1i', :size => 4, :maxlength => 4 %>
+			
+					Please use 4-digit year (e.g. 2008)
+				</dd>
+				
+				<dt><%= v.label :author, 'Author(s)' %></dt>
+				<dd><%= v.text_field :author, :size => 60, :maxlength => 250 %></dd>
+
+				<dt><%= v.label :bibliography, 'Bibliography' %></dt>
+				<dd><%= v.rich_text :bibliography, :small => true %></dd>
+			
+				<dt><%= v.label :full_description, 'Long Description' %></dt>
+				<dd><%= v.rich_text :full_description %></dd>
+				
+				<dt><%= v.label :introduction_block, 'Introduction' %></dt>
+				<dd><%= v.rich_text :introduction_block, :small => true %></dd>
+				
+				<dt><%= v.label :methods_block, 'Methods' %></dt>
+				<dd><%= v.rich_text :methods_block, :small => true %></dd>
+				
+				<dt><%= v.label :results_block, 'Results' %></dt>
+				<dd><%= v.rich_text :results_block, :small => true %></dd>
+				
+				<dt><%= v.label :conclusions_block, 'Conclusions' %></dt>
+				<dd><%= v.rich_text :conclusions_block, :small => true %></dd>
+			</dl>
+		</div>
+		<div class="right_half" style="width:32%">
+			<p<%= @abstract.errors.invalid?(:topic_ids) ? ' class="error_inline"' : '' %>><strong>Topic(s)</strong> Choose all that apply</p>
+			
+			<ul class="check_list">
+				<%= render :partial => 'admin/research_topics/topic', :collection => @topics %>
+				
+				<li class="action" id="add_topic_link_row">
+					<%= link_to_function 'Add Topic', add_topic_link %>
+				</li>
+				<li class="edit action" id="add_topic_field_row" style="display:none;">
+					<%= text_field_tag 'new_topic_name', '', :size => 25, :maxlength => '200', :onkeydown => ignore_enter_key %><br />
+					<span class="controls"><%= button_to_function 'Add', add_topic_button %> or <%= link_to_function 'Cancel', cancel_add_topic %></span>
+					<span class="loading" style="display:none;">Adding&#8230;</span>
+				</li>
+			</ul>
+		</div>
+		
+		<div class="clear"></div>
+		
+		<%= render :partial => 'admin/utility/meta_form', :locals => { :form => v, :affects => 'Affects this abstract only' } %>		
+	<% end %>
+	
+	<p class="checkbox"><%= a.check_box :active_flag %> <%= a.label :active_flag, 'Make this abstract active' %></p>
+
+	<%= render :partial => 'admin/utility/publish_controls', :locals => { 
+																				:enable_publish => ( !@version.new_record? ), 
+																				:form => a,
+																				:show_revert => (@abstract.has_published?) } %>
+<% end %>

@@ -1,0 +1,26 @@
+<%= render :partial => 'sidebar' %>
+
+<% if params[:slug] == "patient_forms" %>
+	<% content_for :content_top do %>
+		<!-- DoubleClick Tags -->
+		<script type="text/javascript">
+		function trackPatientForm() {
+		  var img = new Image(), axel = Math.random()+"", a = axel * 10000000000000;
+			img.src ='http://ad.doubleclick.net/activity;src=2226059;type=texas617;cat=newpa340;ord=1;num='+ a + '?';
+		}
+		
+		function trackPhysicalTherapy() {
+		  var img = new Image(), axel = Math.random()+"", a = axel * 10000000000000;
+			img.src ='http://ad.doubleclick.net/activity;src=2226059;type=texas617;cat=newph646;ord=1;num='+ a + '?';
+		}
+		
+		$(function() {
+			$('.new_patient_pdf').click(trackPatientForm);
+			$('.new_therapy_pdf').click(trackPhysicalTherapy);
+		});
+		</script>
+		<!-- end doubleclick tag -->
+	<% end %>
+<% end %>
+
+<%= @about_page.body %>

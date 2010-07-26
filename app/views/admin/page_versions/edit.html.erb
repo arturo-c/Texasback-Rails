@@ -1,0 +1,20 @@
+<div id="breadcrumbs">
+	<%= breadcrumbs_for_content(@version) %>
+</div>
+<p>This page can be found at <strong><%= link_to "http://texasback.com#{@version.page.url}", "#{@version.page.url}" %></strong> (generated after first publishing)</p>
+
+<%= show_errors_for :version %>
+
+<% form_for @version, :url => version_path(@version), :method => :put do |f| %>
+	<dl class="form">
+		<dt><%= f.label :body_content, 'Body Content' %></dt>
+		<dd><%= f.rich_text :body_content %></dd>
+	</dl>
+	
+	<%= render :partial => 'admin/utility/meta_form', :locals => { :form => f, :affects => "#{h(@version.page.title)} page only" } %>
+		
+	<%= render :partial => 'admin/utility/publish_controls', :locals => { 
+															:enable_publish => (@version.modified? && @version.errors.length == 0), 
+															:form => f,
+															:show_revert => true } %>
+<% end %>

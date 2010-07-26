@@ -1,0 +1,145 @@
+<%= show_errors_for :doctor %>
+
+<% form_for @doctor, :url => (@doctor.new_record? ? doctors_path : doctor_path(:id => @doctor.id)), :html => { :multipart => true } do |f| %>
+	<p>
+		<%= f.label :slug, 'URL:' %>
+		http://texasback.com/about_us/our_doctors_and_staff/<%= f.text_field :slug, :maxlength => 40, :size => 20 %>
+	</p>
+
+	<% fields_for "doctor[draft_version_attributes]", @version do |v| %>
+		<div class="left_half" style="width:65%;">
+			<div class="left_half">
+				<dl class="form">
+					<dt><%= f.label :first_name, 'First Name' %></dt>
+					<dd><%= f.text_field :first_name, :size => 25, :maxlength => 250 %></dd>				
+				</dl>
+			</div>
+			<div class="right_half">
+				<dl class="form">
+					<dt><%= f.label :last_name, 'Last Name' %></dt>
+					<dd><%= f.text_field :last_name, :size => 25, :maxlength => 250 %></dd>				
+				</dl>
+			</div>
+			<div class="clear"></div>
+			
+			<div class="left_half">
+				<dl class="form">
+					<dt><%= f.label :specialty_id, 'Specialty' %></dt>
+					<dd><%= f.select :specialty_id, @specialties.collect {|s| [ s.name, s.id ] }, { :include_blank => true }, { :class => 'half_select' } %></dd>				
+					
+					<dt>
+						<%= v.label :fellowship_id, 'Fellowship Training' %> 
+						<span id="add_fellowship_link">(<%= link_to_function 'Add', add_fellowship_link %>)</span>
+						<span id="add_fellowship_note" style="display:none;">Adding&#8230;</span>
+					</dt>
+					<dd><%= v.select :fellowship_id, @fellowships.collect {|s| [ s.name, s.id ] }, { :include_blank => true }, { :class => 'half_select' } %></dd>
+				</dl>
+			</div>
+			<div class="right_half">
+				<dl class="form">
+					<dt><%= f.label :hire_date, 'Date of Hire' %></dt>
+					<dd>						
+						<%= select_month @doctor.hire_date, {}, :name => 'doctor[hire_date(2i)]', :id => 'doctor_hire_date_2i' %>
+						<%= select_day @doctor.hire_date, {}, :name => 'doctor[hire_date(3i)]', :id => 'doctor_hire_date_3i' %>
+						<%= text_field_tag 'doctor[hire_date(1i)]', @doctor.hire_year, :id => 'doctor_hire_date_1i', :size => 4, :maxlength => 4 %>
+					</dd>
+				</dl>
+			</div>
+			<div class="clear"></div>
+			
+			<div class="left_half">			
+				<p<%= ' class="error_inline"' if @doctor.errors.invalid?(:location_ids) %>><strong>Practicing Location(s)</strong> Choose all that apply</p>
+
+				<ul class="check_list" style="margin-bottom: 1.5em;">
+					<% @locations.each do |location| %>
+						<li>
+								<%= check_box_tag 'doctor[location_ids][]', location.id, @doctor.location_ids.include?(location.id), :id => "location_#{location.id}" %>
+								<%= label_tag "location_#{location.id}", h(location.name) %>
+						</li>
+					<% end %>
+				</ul>
+			</div>
+			<div class="right_half">
+				<p<%= ' class="error_inline"' if @doctor.errors.invalid?(:team_ids) %>><strong>Team(s)</strong> Choose all that apply</p>
+
+				<ul class="check_list" style="margin-bottom: 1.5em;">
+					<% @teams.each do |team| %>
+						<li>
+								<%= check_box_tag 'doctor[team_ids][]', team.id, @doctor.team_ids.include?(team.id), :id => "team_#{team.id}" %>
+								<%= label_tag "team_#{team.id}", h(team.name) %>
+						</li>
+					<% end %>
+				</ul>
+			</div>
+			<div class="clear"></div>
+			
+			<dl class="form">
+				<dt><%= v.label :quote, 'Personal Quote' %></dt>
+				<dd><%= v.rich_text :quote, :small => true %></dd>
+				
+				<dt><%= v.label :certifications, 'Certifications' %></dt>
+				<dd><%= v.rich_text :certifications, :small => true %></dd>
+			
+				<dt><%= v.label :awards, 'Awards' %></dt>
+				<dd><%= v.rich_text :awards %></dd>
+				
+				<dt><%= v.label :education, 'Education' %></dt>
+				<dd><%= v.rich_text :education %></dd>
+				
+				<dt><%= v.label :full_description, 'Long Description' %></dt>
+				<dd><%= v.rich_text :full_description %></dd>
+			</dl>
+			
+			<dl class="form" id="choose_file_block">
+				<dt><%= f.label :publications_file_id, 'Choose a publications file' %> (or <%= link_to_function("upload a new file", upload_new_document) %>)</dt>
+				<dd><%= f.select :publications_file_id, @files.collect { |file| [ file.filename, file.id ] }, :include_blank => 'None' %></dd>
+			</dl>
+			
+			<% fields_for @upload do |u| %>
+				<dl class="form" id="upload_file_block" style="display:none;">
+					<dt><%= u.label :uploaded_data, 'Upload a new publications file' %> (or <%= link_to_function("choose an existing publications file", choose_existing_document) %>)</dt>
+					<dd><%= u.file_field :uploaded_data %></dd>
+				</dl>
+			<% end %>
+			
+			<dl class="form" id="choose_image_block">
+				<dt><%= v.label :doctor_image_id, 'Choose a bio image' %> (or <%= link_to_function("upload a new bio image file", upload_new_image) %>)</dt>
+				<dd><%= v.select :doctor_image_id, @doc_images.collect { |i| [ i.name, i.id ] }, :include_blank => 'None' %></dd>
+			</dl>
+			
+			<% fields_for @doctor_image do |u| %>
+				<dl class="form" id="upload_image_block" style="display:none;">
+					<dt><%= u.label :uploaded_data, 'Upload a new bio image file' %> (or <%= link_to_function("choose an existing image", choose_existing_image) %>)</dt>
+					<dd><%= u.file_field :uploaded_data %></dd>
+				</dl>
+			<% end %>
+		</div>
+		<div class="right_half" style="width:32%">
+			<p><strong>Credentials</strong> Choose all that apply</p>
+			
+			<ul class="check_list">
+				<% @credentials.each do |credential| %>
+					<li>
+							<%= check_box_tag 'doctor[credential_ids][]', credential.id, @doctor.credential_ids.include?(credential.id), :id => "doctor_#{credential.id}" %>
+							<%= label_tag "doctor_#{credential.id}", h(credential.name) %>
+					</li>
+				<% end %>
+				<li style="margin-top: 8px;margin-left: 5px;">
+					<%= v.label :other_credentials, 'Other' %>  (e.g. C.E.O., V.P.)<br />
+					<%= v.text_field :other_credentials, :size => 20, :maxlength => 250, :tabindex => '-1' %>
+				</li>
+			</ul>			
+		</div>
+		
+		<div class="clear"></div>
+		
+		<%= render :partial => 'admin/utility/meta_form', :locals => { :form => v, :affects => 'Affects this person only' } %>		
+	<% end %>
+	
+	<p class="checkbox"><%= f.check_box :active_flag %> <%= f.label :active_flag, 'Make this person active' %></p>
+
+	<%= render :partial => 'admin/utility/publish_controls', :locals => { 
+																				:enable_publish => ( !@version.new_record? ), 
+																				:form => f,
+																				:show_revert => (@doctor.has_published?) } %>
+<% end %>

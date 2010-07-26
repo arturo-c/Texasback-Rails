@@ -1,0 +1,19 @@
+<div id="breadcrumbs">
+	<%= link_to 'Home', admin_path %> &gt; <%= link_to 'Conditions', conditions_path %> &gt; <%= link_to h(@condition.name), edit_condition_path(@condition) %> &gt; <%= link_to 'Add/Edit Image Attachments', condition_images_path(@condition) %> &gt; Edit Image
+</div>
+
+<h1>Edit <%= h @condition.name %> Image</h1>
+
+<%= show_errors_for :image %>
+
+<% form_for @image, :url => condition_image_path(@condition, @image) do |f| %>
+	<dl class="form">
+		<dt><%= f.label :small_caption %> (for display under the thumbnail image)</dt>
+		<dd><%= f.text_field :small_caption, :size => 25, :maxlength => 25 %></dd>
+		
+		<dt><%= f.label :caption, 'Full Caption' %> (for display under the full-size image)</dt>
+		<dd><%= f.text_field :caption, :size => 60, :maxlength => 250 %></dd>
+	</dl>
+
+	<p><%= f.submit 'Save' %>	or <%= link_to "Cancel", condition_images_path(@condition) %></p>
+<% end %>

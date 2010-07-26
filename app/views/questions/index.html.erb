@@ -1,0 +1,7 @@
+<%= render :partial => 'sidebar' %>
+
+<%= rich_format @ask_the_doctor_page.part_content('body') %>
+
+<% @questions.each do |question| %>
+	<%= render :partial => 'question', :locals => { :question => question, :version => question.published } %>
+<% end %>

@@ -1,0 +1,141 @@
+<% content_for :sidebar do %>
+	<%= render :partial => 'admin/utility/side_nav' %>
+<% end %>
+
+<% content_for :head do %>
+	<script type="text/javascript">
+		document.observe('dom:loaded', function() {
+			new TabSet('tabs');
+			
+			[ 'narrow_year', 'narrow_topic' ].each(function(element) {
+				$(element).observe('change', function() {
+					$(element).up('form').submit();
+				});
+			});
+		});		
+	</script>
+<% end %>
+
+<div class="left_half">
+	<h1>Add New Abstract</h1>
+	<p>Prerequisites: Topic</p>
+	
+	<div class="button">
+		<%= link_to 'Add an Abstract', new_abstract_path %>
+	</div>
+	
+	<h2>You will need:</h2>
+	
+	<ul class="bullets">
+		<li>Name of article</li>
+		<li>Topic(s)</li>
+		<li>Publication name</li>
+		<li>Date published</li>
+		<li>Author(s) name(s)</li>
+		<li>Description</li>
+		<li>Meta Data</li>
+	</ul>
+	
+	<p><%= link_to 'Edit introduction copy and/or meta data for default research page.', edit_content_path('research') %></p>
+</div>
+<div class="right_half">
+	<h1>Edit Abstracts</h1>
+	
+	<div class="tab_set" id="tabs">
+		<ul class="tabs">
+			<li class="selected"><a href="#">Active</a></li>
+			<li><a href="#">Inactive</a></li>
+		</ul>
+		<div class="tab_sheet selected">		
+			<% form_tag '/admin/abstracts', :method => :get do %>
+				<div class="filters">
+					<div>Narrow results</div>
+					<div>
+						<%= select_tag 'year', options_for_select(@years.unshift([ "All Years", "" ]), params[:year]), :id => 'narrow_year' %>
+						<%= select_tag 'topic', options_for_select(@topics.collect{ |t| [ t.name, t.id.to_s ] }.unshift([ "View All Topics", "" ]), params[:topic]), :id => 'narrow_topic' %>
+					</div>
+					<div class="topics">
+						<%= link_to 'Edit Topics', research_topics_path %>
+					</div>
+				</div>
+			<% end %>
+			
+			<% if @active.length > 0 %>				
+				<ul class="items_list" id="active_items">
+					<li class="header">
+						<span class="name">Abstract</span>
+						<span class="last_mod">Last Edited</span>
+						<span class="controls">&nbsp;</span>
+						<span class="clear">&nbsp;</span>
+					</li>
+					<% @active.each do |item| %>						
+						<li class="item<%= ' draft' if item.has_unpublished? %>" id="item_<%= item.id %>">
+							<span class="name"><%= h item.name %><%= '*' if item.has_unpublished? %></span>
+							<span class="last_mod"><%= item.updated_at.to_formatted_s(:default) %></span>
+							<span class="controls"><%= link_to 'Edit', edit_abstract_path(item) %></span>
+							<span class="clear">&nbsp;</span>
+						</li>
+					<% end %>
+				</ul>
+				
+				<%= will_paginate @active %>
+				
+				<p class="submit"><span class="draft smaller">* Denotes saved, unpublished version.</span></p>
+			<% else %>
+				<p class="submit">There are no active abstracts.</p>
+			<% end %>
+		</div>
+		<div class="tab_sheet">
+			<% if @inactive.length > 0 %>
+					<ul class="items_list" id="inactive_items">
+						<li class="header">
+							<span class="name">Abstract</span>
+							<span class="last_mod">Last Edited</span>
+							<span class="controls">&nbsp;</span>
+							<span class="clear">&nbsp;</span>
+						</li>
+						<% @inactive.each do |item| %>						
+							<li class="item<%= ' draft' if item.has_unpublished? %>" id="item_<%= item.id %>">
+								<span class="name"><%= h item.name %><%= '*' if item.has_unpublished? %></span>
+								<span class="last_mod"><%= item.updated_at.to_formatted_s(:default) %></span>
+								<span class="controls"><%= link_to 'Edit', edit_abstract_path(item) %></span>
+								<span class="clear">&nbsp;</span>
+							</li>
+						<% end %>
+					</ul>			
+					
+					<p class="submit"><span class="draft smaller">* Denotes saved, unpublished version.</span></p>	
+			<% else %>
+				<p class="submit">There are no inactive abstracts.</p>
+			<% end %>
+		</div>
+	</div>
+</div>
+
+<div class="clear"></div>
+
+<% if @no_topics.length > 0 %>
+	<h2>The following abstracts have no topics assigned</h2>
+
+	<p>These pages cannot be accessed through the site without a topic.</p>
+
+	<ul class="items_list">
+		<li class="header">
+			<span class="name">Abstract</span>
+			<span class="last_mod">Last Edited</span>
+			<span class="controls">&nbsp;</span>
+			<span class="clear">&nbsp;</span>
+		</li>
+		<% @no_topics.each do |item| %>						
+			<li class="item<%= ' draft' if item.has_unpublished? %>" id="item_<%= item.id %>">
+				<span class="name"><%= h item.name %><%= '*' if item.has_unpublished? %></span>
+				<span class="last_mod"><%= item.updated_at.to_formatted_s(:default) %></span>
+				<span class="controls"><%= link_to 'Edit', edit_abstract_path(item) %></span>
+				<span class="clear">&nbsp;</span>
+			</li>
+		<% end %>
+	</ul>
+
+	<div class="clear"></div>
+<% end %>
+	

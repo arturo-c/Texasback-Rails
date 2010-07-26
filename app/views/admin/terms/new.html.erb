@@ -1,0 +1,15 @@
+<% content_for :head do %>
+	<script type="text/javascript">
+	document.observe('dom:loaded', function() {
+		$('term_name').activate();
+	});
+	</script>
+<% end %>
+
+<div id="breadcrumbs">
+	<%= link_to 'Home', admin_path %> &gt; <%= link_to 'Terms', terms_path %> &gt; Add Term
+</div>
+
+<h1>Add Term</h1>
+
+<%= render :partial => 'form' %>

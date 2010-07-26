@@ -1,0 +1,37 @@
+<%= show_errors_for :hotel %>
+
+<% form_for @hotel do |f| %>
+	<dl class="form">
+		<dt><%= f.label :name, 'Hotel Name' %></dt>
+		<dd><%= f.text_field :name, :size => 40, :maxlength => 250 %></dd>
+		
+		<dt><%= f.label :address1, 'Address Line 1' %></dt>
+		<dd><%= f.text_field :address1, :size => 50, :maxlength => 250 %></dd>
+		
+		<dt><%= f.label :address2, 'Address Line 2' %></dt>
+		<dd><%= f.text_field :address2, :size => 50, :maxlength => 250 %></dd>
+		
+		<dt><%= f.label :city, 'City' %></dt>
+		<dd><%= f.text_field :city, :size => 20, :maxlength => 250 %></dd>
+		
+		<dt><%= f.label :state, 'State' %></dt>
+		<dd><%= select :hotel, :state, [[ "", "" ], [ "Arizona", "AZ" ], [ "Texas", "TX" ]] %></dd>
+		
+		<dt><%= f.label :zip, 'Zip' %></dt>
+		<dd><%= f.text_field :zip, :size => 8, :maxlength => 10 %></dd>
+		
+		<dt><%= f.label :phone, 'Phone' %></dt>
+		<dd><%= f.text_field :phone, :size => 25, :maxlength => 25 %></dd>
+		
+		<dt><%= f.label :website, 'Hotel Website' %></dt>
+		<dd><%= f.text_field :website, :size => 50, :maxlength => 250 %></dd>
+		
+		<dt><%= f.label :map_link, 'Map Link' %></dt>
+		<dd><%= f.text_field :map_link, :size => 50, :maxlength => 250 %></dd>
+	</dl>	
+	
+	<p class="checkbox"><%= f.check_box :preferred_flag %><%= f.label :preferred_flag, 'Preferred Hotel' %></p>
+	<p class="checkbox"><%= f.check_box :active_flag %><%= f.label :active_flag, 'Make this hotel active' %></p>
+	
+	<p class="submit"><%= f.submit "Save Hotel" %></p>
+<% end %>

@@ -1,0 +1,17 @@
+<% content_for :head do %>
+	<script type="text/javascript">
+	document.observe('dom:loaded', function() {
+		$('page_title').activate();
+		
+		new SlugMaker('page_title', 'page_slug');
+	});
+	</script>
+<% end %>
+
+<div id="breadcrumbs">
+	<%= link_to 'Home', admin_path %> &gt; <%= link_to 'About Us', about_pages_path %> &gt; Edit Page
+</div>
+
+<h1>Edit About Us Page</h1>
+
+<%= render :partial => 'form' %>

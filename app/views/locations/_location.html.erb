@@ -1,0 +1,10 @@
+<% content_tag_for(:dl, location, :class => 'address') do %>
+	<dt><%= h location.name %></dt>
+	<dd><%= h location.address %></dd>
+	<% unless location.address2.blank? %>
+		<dd><%= h location.address2 %></dd>
+	<% end %>
+	<dd><%= h location.city %>, <%= location.state %> <%= h location.zip %></dd>
+	<dd><%= h location.phone %></dd>
+	<dd><%= link_to 'Get Directions', h(location.map_link), :target => 'blank', :onclick => 'trackClick();' %></dd>
+<% end %>

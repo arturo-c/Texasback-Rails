@@ -1,0 +1,102 @@
+<% content_for :head do %>
+  <style type="text/css">
+  div.home_page_image {
+    width: 115px;
+    height: 170px;
+    margin: 10px;
+    float: left;
+    padding: 10px;
+    background: #ededed;
+    border: 1px solid #ccc;
+    text-align: center;
+    line-height: 16px;
+  }
+  
+  div.home_page_image div {
+    margin-bottom: 10px;
+  }
+  
+  div.active_image {
+    margin-bottom: 20px;
+  }
+  
+  #home_images div.selected {
+    background: #F4F2AF;
+    border: 1px solid #DDDB43;
+  }
+  
+  </style>
+  <script type="text/javascript">
+  document.observe('dom:loaded', function() {
+    $('home_images').observe('click', function(event) {
+      var photo = Event.element(event);
+      
+      if(!photo.hasClassName('home_page_image'))
+        photo = photo.up('div.home_page_image');
+      
+      if(photo) {
+        var radio = photo.down('input[type=radio]');
+        
+        if(radio) {
+          radio.checked = true;
+          
+          var selected = $('home_images').select('div.selected');
+          if(selected.length > 0 ) selected.each(function(s) { if(photo != s) s.removeClassName('selected') });
+
+          photo.addClassName('selected');
+        }
+      }
+    });
+    
+    $('home_images').select('input[type=radio]').each(function(r) {
+      if(r.checked) {
+        r.up('div.home_page_image').addClassName('selected');
+      }
+    });
+  });
+  </script>
+<% end %>
+
+<div id="breadcrumbs">
+	<%= link_to 'Home', admin_path %> &gt; <%= link_to 'Home Page', edit_home_page_path %> &gt; <%= link_to 'Manage Home Page Images', home_page_images_path %> &gt; Edit <%= home_page_image_name(@slot) %> Image
+</div>
+
+<h1>Edit <%= home_page_image_name(@slot) %> Image</h1>
+
+<%= show_errors_for :new_image %>
+
+<% form_tag(update_slot_home_page_images_path) do %>
+  <div id="home_images">
+    <% @images.each do |image| %>
+      <% content_tag_for(:div, image) do %>
+        <div><%= image_tag(image.public_filename, :alt => h(image.caption)) %></div>
+        <% if image.in_use? and image.slot != @slot %>
+          <strong><%= home_page_image_name(image.slot) %></strong>
+        <% else %>
+          <%= radio_button_tag "home_page_image_id", image.id, (@image.id == image.id) %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+  
+  <div class="clear"></div>
+  
+  <p style="margin-top:10px;"><%= submit_tag "Save Home Page Image" %> (Note: Changes will be made live immediately)</p>
+  
+  <%= hidden_field_tag "slot", @slot %>
+<% end %>
+
+
+
+<div style="margin:10px;display:none;">
+  <% form_for @new_image, :html => { :multipart => true } do |f| %>
+  	<dl class="form">
+  		<dt><%= f.label :uploaded_data, "Upload a new image" %></dt>
+  		<dd><%= f.file_field :uploaded_data %></dd>
+  	</dl>
+
+  	<p><%= f.submit 'Upload' %></p>
+	
+  	<%= hidden_field_tag "from_slot", @slot %>
+  <% end %>
+</div>

@@ -1,0 +1,10 @@
+<div id="glossary_headers">
+<% @months.each_with_index do |date, index| %>
+	<%= "|" unless index == 0 %>
+	<% if date == @selected_date %>
+		<%= content_tag(:span, date.to_formatted_s(:short), :class => (index == 0 ? "first" : "")) %>
+	<% else %>
+		<%= link_to(date.to_formatted_s(:short), monthly_events_list_path(:month => date.month, :year => date.year), :class => (index == 0 ? "first" : "")) %>
+	<% end %>
+<% end %>
+</div>

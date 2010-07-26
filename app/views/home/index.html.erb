@@ -1,0 +1,314 @@
+<% content_for :head do %>
+	<script type="text/javascript" src="/_js/swfobject.js"></script>
+	<script type="text/javascript" src="/_js/jquery.cycle.min.js"></script>
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+ function nameDefined(ckie,nme)
+{
+   var splitValues
+   var i
+   for (i=0;i<ckie.length;++i)
+   {
+      splitValues=ckie[i].split("=")
+      if (splitValues[0]==nme) return true
+   }
+   return false
+}
+
+function delBlanks(strng)
+{
+   var result=""
+   var i
+   var chrn
+   for (i=0;i<strng.length;++i) {
+      chrn=strng.charAt(i)
+      if (chrn!=" ") result += chrn
+   }
+   return result
+}
+function getCookieValue(ckie,nme)
+{
+   var splitValues
+   var i
+   for(i=0;i<ckie.length;++i) {
+      splitValues=ckie[i].split("=")
+      if(splitValues[0]==nme) return splitValues[1]
+   }
+   return ""
+}
+function insertCounter() {
+ readCookie()
+ displayCounter()
+}
+ function displayCounter() {
+ document.write('<H3 ALIGN="CENTER">')
+ document.write("You've visited this page ")
+ if(counter==1) document.write("the first time.")
+ else document.write(counter+" times.")
+ document.writeln('</H3>')
+ }
+function readCookie() {
+ var cookie=document.cookie
+ counter=0
+ var chkdCookie=delBlanks(cookie)  //are on the client computer
+ var nvpair=chkdCookie.split(";")
+ if(nameDefined(nvpair,"pageCount"))
+ counter=parseInt(getCookieValue(nvpair,"pageCount"))
+ ++counter
+ var futdate = new Date()
+ var expdate = futdate.getTime()
+ expdate += 3600000 * 24 *30  //expires in 1 hour
+ futdate.setTime(expdate)
+
+ var newCookie="pageCount="+counter
+ newCookie += "; expires=" + futdate.toGMTString()
+ window.document.cookie=newCookie
+}
+// -->
+</SCRIPT>
+	<script type="text/javascript">
+function wopen(url, name, w, h)
+{
+// Fudge factors for window decoration space.
+ // In my tests these work well on all platforms & browsers.
+
+ var win = window.open(url,
+  name,
+  'width=' + w + ', height=' + h + ', ' +
+  'location=no, menubar=no, ' +
+  'status=no, toolbar=no, scrollbars=no, resizable=yes, left=600, top=360');
+ win.resizeTo(w, h);
+ win.focus();
+}
+		swfobject.addDomLoadEvent(function() {
+			if ( !location.search.match(/showSlideShow/) && swfobject.hasFlashPlayerVersion("8.0.0") ) {
+				readCookie();
+				var remainder = counter % 3;
+				if(remainder == 1 ){
+					swfobject.embedSWF("<%= '/_flash/homepage_flash.swf' %>", "home_flash", "956", "262", "8.0.0", "/_flash/expressInstall.swf");	
+				}else if(remainder == 2){
+					swfobject.embedSWF("<%= '/_flash/homepage_latest_advances.swf' %>", "home_flash", "956", "262", "8.0.0", "/_flash/expressInstall.swf");
+				}else{
+					swfobject.embedSWF("<%= '/_flash/homepage_lightbox.swf' %>", "home_flash", "956", "262", "8.0.0", "/_flash/expressInstall.swf");
+				}
+				var remainder2 = counter % 6;
+				var remainder2 = 5;
+if(remainder2 == 1){
+$('#promo6').replaceWith('<div class="promo events" style="cursor: pointer;"'+
+'onclick="self.location.href = \'/conditions\'">'+
+'<div id="headerpromo"><h2>Conditions</h2></div>'+
+'<div class="promo_content">'+
+'<img src="/_images/hero_conditions_badge.jpg" width="115px" height="107px" />'+
+		'<p id="topp"><b>Pinpoint Your Pain</b></p>'+
+		'<p>Match your symptoms with our comprehensive list.</p><br /><br />'+
+		'<p class="home_tab_link" style="margin-bottom:0px"><%= link_to 'Learn&nbsp;more&nbsp;&raquo;', '/conditions' %></p>'+
+	'</div>'+
+'</div>');
+}else if(remainder2 == 2){
+$('#promo6').replaceWith('<div class="promo events" style="cursor: pointer;"'+
+'onclick="self.location.href = \'/treatments\'">'+
+'<div id="headerpromo"><h2>Treatment</h2></div>'+
+'<div class="promo_content">'+
+'<img src="/_images/hero_injection_treatments_badge.jpg" width="115px" height="107px" />'+
+		'<p id="topp"><b>The Road To Relief</b></p>'+
+		'<p>Discover our full range of personalized services and treatment options.</p><br />'+
+		'<p class="home_tab_link" style="margin-bottom:0px"><%= link_to 'Learn&nbsp;more&nbsp;&raquo;', '/treatments' %></p>'+
+	'</div>'+
+'</div>');
+}else if(remainder2 == 3){
+$('#promo6').replaceWith('<div class="promo events" style="cursor: pointer;"'+
+'onclick="self.location.href = \'/wellness\'">'+
+'<div id="headerpromo"><h2>Wellness</h2></div>'+
+'<div class="promo_content">'+
+'<%= image_tag(@home_page_content.images[:wellness], :alt => 'Conditions &amp; Treatments', :width => 115, :height => 107) %>'+
+		'<p id="topp"><b>Stop Back Pain Before It Starts</b></p>'+
+		'<p>Gain strength, avoid stress and get relief now with our healthy back tips.</p>'+
+		'<div style="margin-bottom:0px"><p class="home_tab_link" style="margin-bottom:0px"><%= link_to 'Learn&nbsp;more&nbsp;&raquo;', '/wellness' %></p></div>'+
+	'</div>'+
+'</div>');
+}else if(remainder2 == 4){
+$('#promo6').replaceWith('<div class="promo events" style="cursor: pointer;"'+
+'onclick="self.location.href = \'/spine-place\'">'+
+'<div id="headerpromo"><h2>Spine Place</h2></div>'+
+'<div class="promo_content">'+
+'<img src="/_images/hero_spine-place-blog_badge.jpg" width="115px" height="107px" />'+
+		'<p id="topp"><b>Join The Conversation</b></p>'+
+		'<p>Share in others&rsquo; experiences at Spine Place.</p><br /><br />'+
+		'<p class="home_tab_link" style="margin-bottom:0px"><%= link_to 'Learn&nbsp;more&nbsp;&raquo;', '/spine-place' %></p>'+
+	'</div>'+
+'</div>');
+/*}else if(remainder2 == 5){
+$('#promo6').replaceWith('<div class="promo events" style="cursor: pointer;"'+
+'onClick="wopen(\'/video.html\', \'popup\', 437, 425); return false;">'+
+'<div id="headerpromo"><h2>Virtual Tour</h2></div>'+
+'<div class="promo_content">'+
+'<%= image_tag(@home_page_content.images[:conditions], :alt => 'Conditions &amp; Treatments', :width => 115, :height => 107) %>'+
+		'<p id="topp"><b>Get To Know Texas Back Institute</b></p>'+
+		'<p>Take a video tour of our facility.</p><br /><br />'+
+		'<p class="home_tab_link" style="margin-bottom:0px"><a href="page.html" target="popup"'+
+'onClick="wopen(\'/video.html\', \'popup\', 437, 425); return false;">Learn More &raquo;</a></p>'+
+	'</div>'+
+'</div>');*/
+}else if(remainder2 == 5){
+$('#promo6').replaceWith('<div class="promo events" style="cursor: pointer;"'+
+'onclick="self.location.href = \'/research\'">'+
+'<div id="headerpromo"><h2>Research</h2></div>'+
+'<div class="promo_content">'+
+'<%= image_tag(@home_page_content.images[:research], :alt => 'Conditions &amp; Treatments', :width => 115, :height => 107) %>'+
+		'<p id="topp"><b>Focusing On The Future</b></p>'+
+		'<p>Learn how we can get you back to life using the most advanced technologies.</p><br />'+
+		'<p class="home_tab_link" style="margin-bottom:0px"><%= link_to 'Learn&nbsp;more&nbsp;&raquo;', '/research' %></p>'+
+	'</div>'+
+'</div>');
+}else if(remainder2 == 0){
+$('#promo6').replaceWith('<div class="promo events" style="cursor: pointer;"'+
+'onclick="self.location.href = \'/about_us/news_and_media\'">'+
+'<div id="headerpromo"><h2>News &amp; Events</h2></div>'+
+'<div class="promo_content">'+
+'<%= image_tag(@home_page_content.images[:news], :alt => 'Conditions &amp; Treatments', :width => 115, :height => 107) %>'+
+		'<p id="topp"><b>What&rsquo;s Happening Now?</b></p>'+
+		'<p>Check out the latest on our News & Events page.</p><br /><br />'+
+		'<p class="home_tab_link" style="margin-bottom:0px"><%= link_to 'Learn&nbsp;more&nbsp;&raquo;', '/about_us/news_and_media' %></p>'+
+	'</div>'+
+'</div>');
+}
+			}
+		});
+		
+		$(function() {
+			$('div#promo_tabs h2 a').bind('click', function(event) {
+				var id = $(this).attr('id').split('_')[1];
+				
+				$('div#promo_tabs h2').attr('className', id);
+				
+				$('div#promo_tabs')
+					.find('div.tab').hide().end()
+					.find('div#content_' + id).show();
+				
+				return false;
+			});
+		});
+	</script>
+<% end %>
+<!--
+<div class="promo tabs" id="promo_tabs">
+	<h2 class="news">
+		<%= link_to(content_tag(:span, 'News'), @home_page_content.news_link, :id => 'tab_news') %>
+		<%= link_to(content_tag(:span, 'Wellness'), @home_page_content.wellness_link, :id => 'tab_wellness') %>
+		<%= link_to(content_tag(:span, 'Research'), @home_page_content.research_link, :id => 'tab_research') %>
+		<%= link_to(content_tag(:span, 'Testimonials'), @home_page_content.testimonials_link, :id => 'tab_testimonials') %>
+	</h2>
+	
+	<div id="content_news" class="tab">
+		<div class="promo_content">
+		  <%= image_tag(@home_page_content.images[:news], :alt => 'News', :width => 115, :height => 107) %>
+		
+			<p><%= h @home_page_content.news_content %></p>
+		</div>
+		
+		<p class="home_tab_link"><%= link_to 'Learn&nbsp;more&nbsp;&raquo;', @home_page_content.news_link %></p>
+	</div>
+	<div id="content_wellness" style="display:none;" class="tab">
+		<div class="promo_content">
+			<%= image_tag(@home_page_content.images[:wellness], :alt => 'Wellness', :width => 115, :height => 107) %>
+		
+			<p><%= h @home_page_content.wellness_content %></p>
+		</div>
+		
+		<p class="home_tab_link"><%= link_to 'Learn&nbsp;more&nbsp;&raquo;', @home_page_content.wellness_link %></p>
+	</div>
+	<div id="content_research" style="display:none;" class="tab">
+		<div class="promo_content">
+			<%= image_tag(@home_page_content.images[:research], :alt => 'Research', :width => 115, :height => 107) %>
+		
+			<p><%= h @home_page_content.research_content %></p>
+		</div>
+		
+		<p class="home_tab_link"><%= link_to 'Learn&nbsp;more&nbsp;&raquo;', @home_page_content.research_link %></p>
+	</div>
+	<div id="content_testimonials" style="display:none;" class="tab">
+		<div class="promo_content">
+			<%= image_tag(@home_page_content.images[:testimonials], :alt => 'Testimonials', :width => 115, :height => 107) %>
+		
+			<p><%= h @home_page_content.testimonials_content %></p>
+		</div>
+		
+		<p class="home_tab_link"><%= link_to 'Learn&nbsp;more&nbsp;&raquo;', @home_page_content.testimonials_link %></p>
+	</div>
+</div>
+-->
+
+<div id="promo1">
+<div class="promo conditions" style="cursor: pointer;"
+onclick="self.location.href = '/artificial_disc_replacement';">
+	<div id="headerpromo"><h2>The Center For Disc Replacement</h2></div>
+	<div class="promo_content">
+		<img src="/_images/disc-replacement-badge.jpg" width="115px" height="107px">
+		<p id="topp"><b>At The Forefront: Artificial Disc Replacement</b></p>
+<p>Celebrate the 10th anniversary of the first ADR procedure with us.</p>
+<div style="margin:bottom:0px"><p class="home_tab_link"><%= link_to 'Learn&nbsp;more&nbsp;&raquo;', '/artificial_disc_replacement' %></p></div>
+	</div>
+</div>
+
+</div>
+<div id="promo2">
+<div class="promo conditions" style="cursor: pointer;margin-right:26px"
+onclick="self.location.href = '/minimally-invasive-surgery'">
+	<div id="headerpromo"><h2>Minimally Invasive Surgery</h2></div>
+	<div class="promo_content">
+		<img src="/_images/hero_treatment_minimal-invasive_badge.jpg" width="115px" height="107px">
+		<p id="topp"><b>The Same Effects With Smaller Incisions</b></p>
+		<p>Learn more about our minimally invasive spine solutions.</p>
+<div style="margin:bottom:0px"><p class="home_tab_link" style="margin-bottom:0px"><%= link_to 'Learn&nbsp;more&nbsp;&raquo;', '/minimally-invasive-surgery' %></p></div>
+	</div>
+</div>
+</div>
+<div id="promo3">
+<div class="promo events" style="cursor: pointer;"
+onclick="self.location.href = '/spine-tumor-center';">
+	<div id="headerpromo"><h2>Scoliosis & Spine Tumor Center</h2></div>
+	<div class="promo_content">
+		<img src="/_images/scoliosis-spine-tum.jpg" width="115px" height="107px" />
+		<p id="topp"><b>Scoliosis & Spine Tumor Center</b></p>
+		<p>Find out how our nationally recognized specialists treat complex spinal issues.</p>
+		<p class="home_tab_link"><%= link_to 'Learn&nbsp;more&nbsp;&raquo;', '/spine-tumor-center' %></p>
+	</div>
+</div>
+</div>
+<div style="height:5px;width:100%;">&nbsp;</div>
+<div id="promo4">
+<div class="promo conditions" style="cursor: pointer;margin-right:26px"
+onclick="self.location.href = '/non-surgical-options';">
+	<div id="headerpromo"><h2>Non-Surgical Options</h2></div>
+	<div class="promo_content">
+		<img src="/_images/hero_rehab_badge.jpg" width="115px" height="107px">
+		<p id="topp"><b>Treatment Tailored For You</b></p>
+<p>Check out the long list of effective, non-surgical options we offer.</p><br />
+<p class="home_tab_link"><%= link_to 'Learn&nbsp;more&nbsp;&raquo;', '/non-surgical-options' %></p>	
+	</div>
+</div>
+</div>
+<div id="promo5">
+<div class="promo conditions" style="cursor: pointer;margin-right:26px"
+onclick="self.location.href = '/testimonials';">
+	<div id="headerpromo"><h2>Testimonials</h2></div>
+	<div class="promo_content">
+		<%= image_tag(@home_page_content.images[:testimonials], :alt => 'Conditions &amp; Treatments', :width => 115, :height => 107) %>
+		<p id="topp"><b>Take It From Our Patients </b></p>
+<p>Find comfort in the stories of patients who have been where you are.</p><br />
+<p class="home_tab_link"><%= link_to 'Learn&nbsp;more&nbsp;&raquo;', '/testimonials' %></p>	
+	</div>
+</div>
+</div>
+<div id="promo6">
+<div class="promo events" style="cursor: pointer;"
+onclick="self.location.href = '/about_us/news_and_media';">
+	<div id="headerpromo"><h2>News &amp; Events</h2></div>
+	<div class="promo_content">
+		<%= image_tag(@home_page_content.images[:news], :alt => 'Conditions &amp; Treatments', :width => 115, :height => 107) %>
+		<p id="topp"><b>What's Happening Now?</b></p>
+<p>Check out the latest on our News & Events page.</p>
+<div style="margin:bottom:0px"><p class="home_tab_link"><%= link_to 'Learn&nbsp;more&nbsp;&raquo;', '/about_us/news_and_media' %></p></div>
+	</div>
+</div>
+</div>

@@ -1,0 +1,15 @@
+<% if @preferred_hotels.length > 0 %>
+	<h3>Preferred Hotels</h3>
+	
+	<%= render :partial => 'hotels/hotel', :collection => @preferred_hotels %>
+<% end %>
+
+
+<% if @other_hotels.length > 0 %>
+	<h3>Additional Hotels</h3>
+	
+	<%= render :partial => 'hotels/hotel', :collection => @other_hotels %>
+<% end %>
+
+
+

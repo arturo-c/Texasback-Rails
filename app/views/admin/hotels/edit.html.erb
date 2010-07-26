@@ -1,0 +1,15 @@
+<% content_for :head do %>
+	<script type="text/javascript">
+	document.observe('dom:loaded', function() {
+		$('hotel_name').activate();
+	});
+	</script>
+<% end %>
+
+<div id="breadcrumbs">
+	<%= link_to 'Home', admin_path %> &gt; <%= link_to 'Out of Town Hotels', hotels_path %> &gt; Edit Hotel
+</div>
+
+<h1>Edit Hotel</h1>
+
+<%= render :partial => 'form' %>

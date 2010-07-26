@@ -1,0 +1,131 @@
+<%= show_errors_for :condition %>
+
+<% form_for @condition do |c| %>
+	<dl class="form">
+		<dt><%= c.label :name, 'Condition Name' %></dt>
+		<dd><%= c.text_field :name, :size => 40, :maxlength => 250 %></dd>
+	</dl>
+	
+	<p><%= c.label :slug, 'URL:' %> http://texasback.com/conditions/ <%= c.text_field :slug, :maxlength => 40, :size => 20 %></p>
+	
+	<% fields_for "condition[draft_version_attributes]", @version do |v| %>	
+		<dl class="form">	
+			<dt><%= v.label :area_id, 'Area Affected', :for => nil %></dt>
+			<dd id="areas">
+				<% @areas.each_with_index do |area, index| %>			
+					<div class="area<%= ' chosen_area' if area.id == @version.area_id %>">
+						<%= label_tag("condition_draft_version_attributes_area_id_#{area.id}", image_tag("/_images/back_images/small_#{area.photo_path}", :alt => area.name)) %>
+				
+						<div class="radio">
+							<%= label_tag("condition_draft_version_attributes_area_id_#{area.id}", h(area.name)) %>
+							<%= v.radio_button :area_id, area.id %>
+						</div>
+					</div>
+					<%= '<div class="clear"></div>' if (index % 3 == 0 && index > 0) %>
+				<% end %>				
+			</dd>
+		</dl>		
+		
+		<div id="full_tabs">
+			<div class="tab_set" id="tabs">
+				<ul class="tabs">
+					<li class="selected"><a href="#">Overview</a></li>
+					<li><a href="#">Treatments</a></li>
+				</ul>
+				<div class="tab_sheet selected">		
+					<div class="left_half">
+						<dl class="form">
+							<dt><%= v.label :symptoms, 'Symptoms' %></dt>
+							<dd><%= v.text_area :symptoms, :cols => 30, :rows => 10, :class => 'full' %></dd>
+						</dl>
+					</div>
+					<div class="right_half">
+						<dl class="form">
+							<dt><%= v.label :description, 'Description' %></dt>
+							<dd><%= v.text_area :description, :cols => 30, :rows => 10, :class => 'full' %></dd>
+						</dl>				
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="tab_sheet">
+					<div class="left_half" style="width: 39%;">
+						<dl class="form">
+							<dt id="show_intro_toggle_dt"><%= v.check_box :show_treatment_intro %> <%= v.label :show_treatment_intro, 'Show Introduction' %></dt>
+							<dd id="treatment_intro_container"<%= ' style="display:none;"' unless @version.show_treatment_intro %>>
+								<%= v.text_area :treatment_intro, :cols => 30, :rows => 10, :class => 'full' %>
+							</dd>
+						</dl>				
+					</div>
+					<div class="right_half" style="width: 59%">
+							<div id="treatments_picker">
+								<div class="headers">
+									<% @types.each_with_index do |type, index| %>
+										<a href="#" id="treatmentheader_<%= type.id %>"<%= ' class="selected"' if index == 0 %>><%= h type.clean_name %></a>
+									<% end %>
+ 								</div>
+								
+								<% @types.each_with_index do |type, index| %>
+									<div class="types" id="treatmentblock_<%= type.id %>"<%= ' style="display:none;"' unless index == 0 %>>										
+										<% if type.all_published_treatments.length > 10 %>
+											<div class="left_half">
+										<% end %>
+																				
+										<ul class="check_list">
+											<% type.all_published_treatments.each_with_index do |treatment, index| %>
+												<% unless index >= 20 %>
+												
+													<% if index == 10 %>
+														</ul></div><div class="right_half"><ul class="check_list">
+													<% end %>
+													
+													<li>
+														<%= check_box_tag 'condition[draft_version_attributes][treatment_ids][]', treatment.id, @version.treatment_ids.include?(treatment.id), :id => "treatment_#{treatment.id}" %>
+														<%= label_tag "treatment_#{treatment.id}", h(treatment.name) %>
+													</li>
+												<% end %>
+											<% end %>											
+										<% if type.all_published_treatments.length > 10 %>
+											</div>
+											<div class="clear"></div>
+										<% end %>
+									</div>
+								<% end %>
+							</div>
+							<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+		</div>
+		
+		<dl class="form">
+			<dt><%= v.label :full_description, 'Full Description' %></dt>
+			<dd><%= v.rich_text :full_description %></dd>
+			
+			<dt><%= v.label :screening_diagnosis, 'Screening and Diagnosis' %></dt>
+			<dd><%= v.rich_text :screening_diagnosis, :small => true %></dd>
+			
+			<dt><%= v.label :treatments_text, 'Treatments' %></dt>
+			<dd><%= v.rich_text :treatments_text, :small => true %></dd>
+		</dl>
+		
+		<% unless @condition.new_record? %>
+			<div class="form_block">
+				<h2>Images</h2>
+		
+				<p>There are <%= @condition.images.length %> <%= pluralize(@condition.images.length, "image") %> attached to this condition.  <%= link_to 'Add/Edit Images', condition_images_path(@condition) %></p>
+				
+				<%= render :partial => 'admin/condition_images/images', :locals => { :editable => false } %>				
+			</div>
+		<% end %>
+		
+		<%= render :partial => 'admin/utility/meta_form', :locals => { :form => v, :affects => 'Affects this condition page only' } %>
+	<% end %>
+	
+	<p class="checkbox"><%= c.check_box :active_flag %> <%= c.label :active_flag, 'Make this condition active' %></p>
+
+	<%= render :partial => 'admin/utility/publish_controls', :locals => { 
+																				:enable_publish => ( !@version.new_record? ), 
+																				:form => c,
+																				:show_revert => (@condition.has_published?) } %>
+<% end %>

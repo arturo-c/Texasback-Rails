@@ -1,0 +1,7 @@
+<% if @releases.length > 0 %>
+	<h3>Press Releases</h3>
+	
+	<ul>
+		<%= render :partial => 'news_and_media/press_release', :collection => @releases %>
+	</ul>
+<% end %>

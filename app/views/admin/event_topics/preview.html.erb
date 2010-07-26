@@ -1,0 +1,17 @@
+<%= render :partial => 'admin/utility/preview_bar', :locals => { 
+																		:preview_path => "Event Topic: #{h(@topic.name)}",
+																		:button_link => edit_event_topic_path(params[:id]) } %>
+																		
+<%= render :partial => 'about_pages/sidebar' %>
+
+<%= rich_format @events_page.part_content('body') %>
+
+<%= render :partial => 'events/months_list' %>
+
+<h3>Upcoming <%= h @topic.name %> Events</h3>
+
+<% if @events.length > 0 %>
+	<%= render :partial => 'events/event_small', :collection => @events %>
+<% else %>
+	<p>There are no upcoming <%= h @topic.name.downcase %> events.  Check back soon!</p>
+<% end %>

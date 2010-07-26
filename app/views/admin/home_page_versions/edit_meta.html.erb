@@ -1,0 +1,25 @@
+<% content_for :head do %>
+	<script type="text/javascript">
+	document.observe('dom:loaded', function() {
+		$('home_page_version_page_title').activate();
+	});
+	</script>
+<% end %>
+
+<div id="breadcrumbs">
+	<%= link_to 'Home', admin_path %> &gt; <%= link_to 'Home Page', edit_home_page_path %> &gt; Edit Meta Data
+</div>
+
+<%= show_errors_for :version %>
+
+<% form_tag update_home_page_meta_path do %>
+	<% fields_for @version do |f| %>
+	<%= render :partial => 'admin/utility/meta_form', :locals => { :form => f, :affects => 'Home Page only' } %>
+	
+	<%= render :partial => 'admin/utility/publish_controls', :locals => { 
+																				:enable_publish => ( !@version.new_record? ), 
+																				:form => f,
+																				:show_revert => true } %>
+																				
+	<% end %>
+<% end %>

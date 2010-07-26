@@ -1,0 +1,7 @@
+<%= render :partial => 'admin/utility/preview_bar', :locals => { 
+																		:preview_path => "Diagnostic: #{h(@diagnostic.name)}",
+																		:button_link => edit_diagnostic_path(params[:id]) } %>
+						
+<%= render :partial => 'diagnostics/sidebar' %>
+											
+<%= render :partial => 'diagnostics/diagnostic', :locals => { :diagnostic => @diagnostic, :version => @version } %>

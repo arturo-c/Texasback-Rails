@@ -1,0 +1,5 @@
+<% if @media_entries.length > 0 %>
+	<h3>Media Coverage</h3>
+	
+	<%= render :partial => 'news_and_media/media_entry', :collection => @media_entries %>
+<% end %>

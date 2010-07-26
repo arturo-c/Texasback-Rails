@@ -1,0 +1,14 @@
+<%= render :partial => 'about_pages/sidebar' %>
+
+<%= rich_format @glossary_page.part_content('body') %>
+
+<div id="glossary_headers">
+	<% @groups.each_with_index do |group, index| %>
+		<% if group.has_published_terms? %>
+			<%= "|" unless index == 0 %>			
+			<%= link_to(group.name, { :anchor => "gr#{group.id}" }, :class => (index == 0 ? "first" : "")) %>
+		<% end%>		
+	<% end %>
+</div>
+
+<%= render :partial => 'group', :collection => @groups %>

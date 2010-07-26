@@ -1,0 +1,1 @@
+page.replace_html "TB_ajaxContent", :partial => 'team_doctors'

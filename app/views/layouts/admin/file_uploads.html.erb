@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+	<head>
+		<title></title>
+		<script type="text/javascript" src="/javascripts/tiny_mce/tiny_mce_popup.js"></script>
+			<script type="text/javascript" src="/javascripts/tiny_mce/utils/mctabs.js"></script>
+		<script type="text/javascript">		
+		function insertFileLink(filename) {
+			var ed = tinyMCEPopup.editor, b;
+			
+			tinyMCEPopup.restoreSelection();
+					
+			var linkLabel = document.getElementById('file_label') ? document.getElementById('file_label').value : '';
+			
+			var element = ed.dom.getParent(ed.selection.getNode(), 'A');
+
+			// Remove element if there is no href
+			if (!filename) {
+				if (element) {
+					tinyMCEPopup.execCommand("mceBeginUndoLevel");
+					b = ed.selection.getBookmark();
+					ed.dom.remove(element, 1);
+					ed.selection.moveToBookmark(b);
+					tinyMCEPopup.execCommand("mceEndUndoLevel");
+					tinyMCEPopup.close();
+					return;
+				}
+			}
+
+			tinyMCEPopup.execCommand("mceBeginUndoLevel");
+
+			// Create new anchor elements
+			if (element == null) {
+				tinyMCEPopup.execCommand("CreateLink", false, "#mce_temp_url#", {skip_undo : 1});
+
+				tinymce.each(ed.dom.select("a"), function(n) {
+					if (ed.dom.getAttrib(n, 'href') == '#mce_temp_url#') {
+						element = n;
+
+						ed.dom.setAttribs(element, {
+							href : filename,
+							title : linkLabel,
+							target : null,
+							'class' : null
+						});
+					}
+				});
+			} else {
+				ed.dom.setAttribs(element, {
+					href : filename,
+					title : linkLabel,
+					target : null,
+					'class' : null
+				});
+			}
+
+			// Don't move caret if selection was image
+			if (element.childNodes.length != 1 || element.firstChild.nodeName != 'IMG') {
+				ed.focus();
+				ed.selection.select(element);
+				ed.selection.collapse(0);
+				tinyMCEPopup.storeSelection();
+			}
+
+			tinyMCEPopup.execCommand("mceEndUndoLevel");
+			tinyMCEPopup.close();
+		}
+		</script>
+	</head>
+	<body>
+		<%= yield %>
+	</body>
+</html>

@@ -1,0 +1,22 @@
+<div class="form_block">	
+	<h2>Meta Content<%= " <span class=\"details\">#{affects}</span>" if affects %></h2>
+
+	<dl class="form">
+		<dt><%= form.label :page_title, 'Title' %></dt>
+		<dd><%= form.text_field :page_title, :size => 40, :maxlength => 250, :class => 'full' %></dd>
+	</dl>
+
+	<div class="left_half">
+		<dl class="form last">
+			<dt><%= form.label :meta_description, 'Description' %></dt>
+			<dd class="last"><%= form.text_area :meta_description, :rows => 8, :class => 'full' %></dd>
+		</dl>
+	</div>
+	<div class="right_half">
+		<dl class="form last">
+			<dt><%= form.label :meta_keywords, 'Keywords' %> (separate by a comma)</dt>
+			<dd class="last"><%= form.text_area :meta_keywords, :rows => 8, :class => 'full' %></dd>
+		</dl>
+	</div>
+	<div class="clear"></div>
+</div>

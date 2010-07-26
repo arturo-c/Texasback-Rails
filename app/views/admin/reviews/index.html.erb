@@ -1,0 +1,133 @@
+<% content_for :sidebar do %>
+	<%= render :partial => 'admin/utility/side_nav' %>
+<% end %>
+
+<% content_for :head do %>
+	<script type="text/javascript">
+		document.observe('dom:loaded', function() {
+			new TabSet('tabs');
+						
+			[ 'narrow_conditions' ].each(function(element) {
+				$(element).observe('change', function() {
+					$(element).up('form').submit();
+				});
+			});
+		});		
+	</script>
+<% end %>
+
+<div class="left_half">
+	<h1>Add a New Testimonial</h1>
+	<p>Prerequisites: Conditions</p>
+	
+	<div class="button">
+		<%= link_to 'Add a New Testimonial', new_testimonial_path %>
+	</div>
+	
+	<h2>You will need:</h2>
+	
+	<ul class="bullets">
+		<li>Short Description (300 characters or less)</li>
+		<li>Conditions treated at Texas Back Institute</li>
+		<li>Long description</li>
+		<li>Meta Data</li>
+	</ul>
+	
+	<p><%= link_to 'Edit introduction copy and/or meta data for default testimonials page.', edit_content_path('testimonials') %></p>
+</div>
+<div class="right_half">
+	<h1>Edit Testimonial</h1>
+	
+	<div class="tab_set" id="tabs">
+		<ul class="tabs">
+			<li class="selected"><a href="#">Active</a></li>
+			<li><a href="#">Inactive</a></li>
+		</ul>
+		<div class="tab_sheet selected">		
+			<% form_tag '/admin/testimonials', :method => :get do %>
+				<div class="filters">
+					<div>Narrow results</div>
+					<div>
+						<%= select_tag 'condition', options_for_select(@conditions.collect{ |c| [ c.name, c.id.to_s ] }.unshift([ "View All Conditions", "" ]), params[:condition]), :id => 'narrow_conditions' %>
+					</div>
+				</div>
+			<% end %>
+			
+			<% if @active.length > 0 %>
+				<ul class="items_list" id="active_items">
+					<li class="header">
+						<span class="name">Name</span>
+						<span class="last_mod">Last Edited</span>
+						<span class="controls">&nbsp;</span>
+						<span class="clear">&nbsp;</span>
+					</li>
+					<% @active.each do |item| %>						
+						<li class="item<%= ' draft' if item.has_unpublished? %>" id="item_<%= item.id %>">
+							<span class="name"><%= h item.abbrev_name %><%= '*' if item.has_unpublished? %></span>
+							<span class="last_mod"><%= item.updated_at.to_formatted_s(:default) %></span>
+							<span class="controls"><%= link_to 'Edit', edit_testimonial_path(item) %></span>
+							<span class="clear">&nbsp;</span>
+						</li>
+					<% end %>
+				</ul>
+				
+				<%= will_paginate @active %>
+				
+				<p class="submit"><span class="draft smaller">* Denotes saved, unpublished version.</span></p>
+			<% else %>
+				<p class="submit">There are no active testimonials.</p>
+			<% end %>
+		</div>
+		<div class="tab_sheet">
+			<% if @inactive.length > 0 %>
+					<ul class="items_list" id="inactive_items">
+						<li class="header">
+							<span class="name">Name</span>
+							<span class="last_mod">Last Edited</span>
+							<span class="controls">&nbsp;</span>
+							<span class="clear">&nbsp;</span>
+						</li>
+						<% @inactive.each do |item| %>						
+							<li class="item<%= ' draft' if item.has_unpublished? %>" id="item_<%= item.id %>">
+								<span class="name"><%= h item.abbrev_name %><%= '*' if item.has_unpublished? %></span>
+								<span class="last_mod"><%= item.updated_at.to_formatted_s(:default) %></span>
+								<span class="controls"><%= link_to 'Edit', edit_testimonial_path(item) %></span>
+								<span class="clear">&nbsp;</span>
+							</li>
+						<% end %>
+					</ul>			
+					
+					<p class="submit"><span class="draft smaller">* Denotes saved, unpublished version.</span></p>
+			<% else %>
+				<p class="submit">There are no inactive testimonials.</p>
+			<% end %>
+		</div>
+	</div>
+</div>
+
+<div class="clear"></div>
+
+<% if @no_conditions.length > 0 %>
+	<h2 style="margin-top: 20px;">The following testimonials have no conditions assigned</h2>
+
+	<p>These pages cannot be accessed through the site without a condition.</p>
+
+	<ul class="items_list">
+		<li class="header">
+			<span class="name">Name</span>
+			<span class="last_mod">Last Edited</span>
+			<span class="controls">&nbsp;</span>
+			<span class="clear">&nbsp;</span>
+		</li>
+		<% @no_conditions.each do |item| %>						
+			<li class="item<%= ' draft' if item.has_unpublished? %>" id="item_<%= item.id %>">
+				<span class="name"><%= h item.abbrev_name %><%= '*' if item.has_unpublished? %></span>
+				<span class="last_mod"><%= item.updated_at.to_formatted_s(:default) %></span>
+				<span class="controls"><%= link_to 'Edit', edit_testimonial_path(item) %></span>
+				<span class="clear">&nbsp;</span>
+			</li>
+		<% end %>
+	</ul>
+
+	<div class="clear"></div>
+<% end %>

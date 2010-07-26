@@ -1,0 +1,45 @@
+<% content_for :head do %>
+	<%= javascript_include_tag '/_js/jquery.min.js', '/_js/jquery.fancybox.js', '/_js/jquery.pngFix.pack.js' %>
+
+	<script type="text/javascript">
+	jQuery.noConflict();
+	
+	jQuery(document).ready(function($){
+		$('div.event_image a.image').each(function() {
+			$(this).fancybox();
+		});
+  });
+
+	function fixFloats() {
+		$('event_images').select('div.clear').each(function(clear) {
+			clear.remove();
+		});
+		
+		var count = 1;
+		
+		$('event_images').select('div.event_image').each(function(div) {
+			if(count % 5 == 0) {
+				div.insert({ after: new Element('div', { className: 'clear' }) });
+				count = 1;
+			}
+			else {
+				count++;
+			}
+		});
+	}
+	</script>
+<% end %>
+
+<div id="breadcrumbs">
+	<%= link_to 'Home', admin_path %> &gt; <%= link_to 'Events', events_path %> &gt; <%= link_to h(@event.name), edit_event_path(@event) %> &gt; Add/Edit Image Attachments
+</div>
+
+<h1><%= h @event.name %> Images</h1>
+
+<%= render :partial => 'images', :locals => { :editable => true } %>
+
+<h2>Add Image</h2>
+
+<%= show_errors_for :image %>
+
+<%= render :partial => 'form' %>

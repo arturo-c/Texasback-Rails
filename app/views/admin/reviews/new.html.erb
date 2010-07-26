@@ -1,0 +1,19 @@
+<% content_for :head do %>
+	<script type="text/javascript">
+	document.observe('dom:loaded', function() {
+		$('review_first_name').activate();
+		
+		new SlugMaker('review_last_name', 'review_slug');
+		new TextAreaLimiter('review_draft_version_attributes_short_description', 150);
+		new TreatmentsPicker('treatments_picker', 'treatmentheader', 'treatmentblock');
+	});
+	</script>
+<% end %>
+
+<div id="breadcrumbs">
+	<%= link_to 'Home', admin_path %> &gt; <%= link_to 'Testimonials', testimonials_path %> &gt; Add Testimonial
+</div>
+
+<h1>Add Testimonial</h1>
+
+<%= render :partial => 'form' %>

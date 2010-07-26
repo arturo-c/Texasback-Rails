@@ -1,0 +1,17 @@
+<% content_for :head do %>
+	<script type="text/javascript">
+	document.observe('dom:loaded', function() {
+		$('event_topic_name').activate();
+		
+		new SlugMaker('event_topic_name', 'event_topic_slug');
+	});
+	</script>
+<% end %>
+
+<div id="breadcrumbs">
+	<%= link_to 'Home', admin_path %> &gt; <%= link_to 'Events', events_path %> &gt; <%= link_to 'Topics', event_topics_path %> &gt; Edit Topic
+</div>
+
+<h1>Edit Topic</h1>
+
+<%= render :partial => 'form' %>

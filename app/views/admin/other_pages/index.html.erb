@@ -1,0 +1,46 @@
+<% content_for :sidebar do %>
+	<%= render :partial => 'admin/utility/side_nav' %>
+<% end %>
+
+<div class="left_half">
+
+<h1>Other Pages</h1>
+
+<p>Prerequisites: None</p>
+
+<div class="button">
+	<%= link_to 'Add a New Page', new_other_page_path %>
+</div>
+
+<h2>You will need:</h2>
+
+<ul class="bullets">
+	<li>Preferred URL</li>
+	<li>Body copy</li>
+	<li>Meta Data</li>
+</ul>
+
+</div>
+
+<div class="clear"></div>
+
+<% if @active.length > 0 %>
+	<table>
+		<thead>
+			<tr>
+				<th>Page Name</th>
+				<th>URL</th>
+				<th>&nbsp;</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @active.each do |item| %>
+				<tr>
+					<td><%= h item.name %></td>
+					<td>http://texasback.com<%= item.url %></td>
+					<td><%= link_to 'Edit', edit_other_page_path(item.id) %></td>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
+<% end %>

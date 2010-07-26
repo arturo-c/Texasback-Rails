@@ -1,0 +1,42 @@
+<h1>Contact Form Results</h1>
+
+<p>For the date range of <%= @from.to_formatted_s(:default) %> to <%= @to.to_formatted_s(:default) %></p>
+
+<table border="1">
+	<thead>
+		<tr>
+			<th width="100"><strong>ID</strong></th>
+			<th><strong>Submitted On</strong></th>
+			<th><strong>First Name</strong></th>
+			<th><strong>Last Name</strong></th>
+			<th><strong>Email</strong></th>
+			<th><strong>Address</strong></th>
+			<th><strong>Address Line 2</strong></th>
+			<th><strong>City</strong></th>
+			<th><strong>State</strong></th>
+			<th><strong>Zip</strong></th>
+			<th><strong>How did you hear about us?</strong></th>
+			<th><strong>Phone</strong></th>
+			<th><strong>Question</strong></th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @entries.each do |entry| %>
+			<tr>
+				<td><%= entry.id %></td>
+				<td><%= entry.created_at.to_formatted_s(:short_with_time) %></td>
+				<td><%= h entry.first_name %></td>
+				<td><%= h entry.last_name %></td>
+				<td><%= h entry.email %></td>
+				<td><%= h entry.address1 %></td>
+				<td><%= h entry.address2 %></td>
+				<td><%= h entry.city %></td>
+				<td><%= h entry.state %></td>
+				<td><%= h entry.zip %></td>
+				<td><%= h entry.how_did_you_hear %></td>
+				<td><%= h entry.phone %></td>
+				<td><%= h entry.question %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>

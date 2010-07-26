@@ -1,0 +1,25 @@
+<div class="media_event">
+	<% if media_entry.has_logo? %>
+		<img alt="<%= h media_entry.source %>" src="<%= media_entry.logo %>"/>
+	<% end %>
+	
+	<dl>
+		<dt><%= media_entry.entry_date.to_formatted_s(:long_date) %></dt>
+		
+		<dt>Source:</dt>
+		<dd><%= media_entry.source_formatted %></dd>
+		
+		<% unless media_entry.article.blank? %>
+			<dt>Article:</dt>
+			<dd><%= media_entry.article_formatted %></dd>
+		<% end %>
+		
+		<% unless media_entry.topic.blank? %>
+			<dt>Topic:</dt>
+			<dd><%= h media_entry.topic %></dd>
+		<% end %>
+		
+		<dt>Summary:</dt>
+		<dd><%= h media_entry.summary %></dd>
+	</dl>
+</div>

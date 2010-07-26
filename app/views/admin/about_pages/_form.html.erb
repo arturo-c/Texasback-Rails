@@ -1,0 +1,26 @@
+<%= show_errors_for :about_page %>
+
+<% form_for @about_page do |a| %>
+	<% fields_for @page do |p| %>
+		<dl class="form">
+			<dt><%= p.label :title, 'Page Name' %></dt>
+			<dd><%= p.text_field :title, :size => 40, :maxlength => 250 %></dd>
+		</dl>
+
+		<p><%= a.label :slug, 'URL:' %> http://texasback.com/about_us/ <%= p.text_field :slug, :maxlength => 40, :size => 20 %></p>
+	<% end %>
+	
+	<% fields_for @page_version do |v| %>
+		<dl class="form">
+			<dt><%= v.label :body_content, 'Body Content' %></dt>
+			<dd><%= v.rich_text :body_content %></dd>
+		</dl>
+	
+		<%= render :partial => 'admin/utility/meta_form', :locals => { :form => v, :affects => "This page only" } %>
+	<% end %>
+		
+	<%= render :partial => 'admin/utility/publish_controls', :locals => { 
+					:enable_publish => (!@about_page.new_record? && (@page_version.modified? || !@page.published?)), 
+					:form => a, 
+					:show_revert => @page.published? } %>
+<% end %>

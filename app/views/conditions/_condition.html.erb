@@ -1,0 +1,89 @@
+<%= image_tag("/_images/back_images/large_#{@version.area.photo_path}", :alt => @version.area.name) %>
+
+<div class="overview">
+	<h3 id="conditions_overview_tab" class="selected tab">Overview<span>&nbsp;</span></h3>
+	<div class="tab">
+		<h4><%= h @condition.name %></h4>
+		<p class="links">
+			<%= link_to 'Email', email_friend_path(:slug => @condition.slug), :class => 'email_link' %> | 
+			<a href="#" class="print_link">Print</a>
+		</p>
+		
+		<h5>Symptoms</h5>
+		
+		<%= simple_format @version.symptoms %>
+		
+		<h5>Description <a href="#full">Additional information</a></h5>
+		
+		<%= simple_format @version.description %>
+	</div>
+	<h3 id="conditions_treatments_tab" class="tab">Treatments<span>&nbsp;</span></h3>
+	<div class="tab" style="display:none;">
+		<h4><%= h @condition.name %></h4>
+		<p class="links">
+			<%= link_to 'Email', email_friend_path(:slug => @condition.slug), :class => 'email_link' %>
+			 | <a href="#" class="print_link">Print</a>
+		</p>
+		
+		<% if @version.show_treatment_intro %>
+			<%= simple_format @version.treatment_intro %>	
+		<% end %>
+
+		<% if @version.treatments.length > 0 %>
+			<%= output_treatments(@version) %>
+		<% end %>
+	</div>
+	
+	<div class="foot">
+		<a href="/appointments" class="appointments">Appointments<span>&nbsp;</span></a>
+		<% if @condition.has_published_reviews? %>
+			<a href="#" class="view_testimonial">&laquo;Testimonial</a>
+		<% end %>
+	</div>
+</div>
+
+<% content_for :bottom do %>	
+	<% if @condition.has_published_reviews? %>
+		<div id="testimonial_snippet" style="display:none;">
+			<% @review = @condition.featured_review	%>
+
+			<p class="review"><%= @review.published.short_description %></p>
+			<p class="controls">
+				<a href="#" id="close_testimonial">Close Testimonial&raquo;</a>
+				<%= link_to "Read #{@review.first_name}&#8217;s Story &raquo;", view_testimonial_path(:slug => @review.slug) %>			
+			</p>
+		</div>
+	<% end %>
+<% end %>
+
+<h2 id="full">Full Description</h2>
+
+<% if @version.has_images? %>
+	<% @version.images.each do |image| %>
+		<div class="condition_thumb">
+			<%= link_to(image_tag(image.public_filename(:thumb), :alt => h(image.small_caption)), image.public_filename, :title => h(image.caption), :class => 'zoom', :rel => 'condition-image') %>
+			
+			<span class="caption">
+				<%= link_to(h(image.small_caption), image.public_filename, :title => h(image.caption), :class => 'zoom', :rel => 'condition-image-captions') %>
+			</span>
+		</div>
+	<% end %>
+<% end %>
+
+<%= rich_format @version.full_description %>
+
+<% unless @version.screening_diagnosis.blank? %>
+	<h2>Screening and Diagnosis</h2>
+	
+	<%= rich_format @version.screening_diagnosis %>
+<% end %>
+
+<% @all_treatments = output_all_treatments(@version) %>
+
+<% unless @all_treatments.blank? and @version.treatments_text.blank? %>
+	<h2 id="all_treatments">Treatments for <%= h @condition.name %></h2>
+
+	<%= rich_format @version.treatments_text %>
+
+	<%= @all_treatments %>
+<% end %>

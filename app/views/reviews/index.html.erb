@@ -1,0 +1,30 @@
+<%= rich_format @testimonials_page.part_content('body') %>
+
+<h3>Search by Condition</h3>
+
+<ul>
+	<% @conditions.each do |condition| %>
+		<% if condition.has_published_reviews? %>
+			<li><%= link_to h(condition.name), condition_testimonials_path(:slug => condition.slug) %></li>
+		<% end %>
+	<% end %>
+</ul>
+
+<h3>Search by Name</h3>
+
+<ul>
+	<% @reviews.each do |review| %>
+		<li>
+			<%= link_to h(review.name), view_testimonial_path(:slug => review.slug) %><br />
+			<% if review.treatments.length > 0 %>
+				<%= pluralize(review.conditions.length, "Condition") %>:
+				<% review.conditions.each_with_index do |condition, index| %><%= ", " unless index == 0 %><%= h condition.name %><% end %>			
+			<% end %>
+			
+			<% if review.treatments.length > 0 %>
+				<br /><%= pluralize(review.treatments.length, "Treatment") %>:
+				<% review.treatments.each_with_index do |treatment, index| %><%= ", " unless index == 0 %><%= h treatment.name %><% end %>
+			<% end %>
+		</li>
+	<% end %>
+</ul>

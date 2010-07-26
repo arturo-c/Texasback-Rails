@@ -1,0 +1,14 @@
+<% content_for :sidebar do %>
+	<%= render :partial => 'admin/utility/side_nav' %>
+<% end %>
+
+<h1><%= h @about_page.name %></h1>
+
+<h2>You will need:</h2>
+
+<ul class="bullets">
+	<li>Introduction Copy</li>
+	<li>Meta data</li>
+</ul>
+
+<p><%= link_to "Edit copy and meta data", edit_about_page_path(@about_page) %></p>

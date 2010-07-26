@@ -1,0 +1,27 @@
+<%= show_errors_for :press_release %>
+
+<% form_for @press_release, :html => { :multipart => true } do |f| %>
+	<dl class="form">
+		<dt><%= f.label :name, 'Release Title' %></dt>
+		<dd><%= f.text_field :name, :size => 40, :maxlength => 250 %></dd>
+		
+		<dt><label for="press_release_release_date_2i">Release Date</label></dt>
+		<dd><%= f.date_select :release_date, :order => [ :month, :day, :year ] %></dd>
+	</dl>
+	
+	<dl class="form" id="choose_file_block">
+		<dt><%= f.label :file_upload_id, 'Choose an existing release document' %> (or <%= link_to_function("upload a new document", upload_new_document) %>)</dt>
+		<dd><%= f.select :file_upload_id, @files.collect { |file| [ file.filename, file.id ] }, :include_blank => 'None' %></dd>
+	</dl>
+	
+	<% fields_for @upload do |u| %>
+		<dl class="form" id="upload_file_block" style="display:none;">
+			<dt><%= u.label :uploaded_data, 'Upload a new document' %> (or <%= link_to_function("choose an existing release document", choose_existing_document) %>)</dt>
+			<dd><%= u.file_field :uploaded_data %></dd>
+		</dl>
+	<% end %>
+	
+	<p class="checkbox"><%= f.check_box :active_flag %><%= f.label :active_flag, 'Make this press release active' %></p>
+	
+	<p class="submit"><%= f.submit "Save Press Release" %></p>
+<% end %>

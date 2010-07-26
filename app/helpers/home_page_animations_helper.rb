@@ -1,0 +1,2 @@
+module HomePageAnimationsHelper
+end

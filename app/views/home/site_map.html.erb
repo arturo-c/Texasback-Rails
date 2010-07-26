@@ -1,0 +1,66 @@
+<h2>Site Map</h2>
+
+<ul>
+	<li><%= link_to 'Conditions', conditions_list_path %>
+		<ul>
+			<li>Specific Conditions
+				<ul class="specific_conditions">
+					<% @conditions.each do |condition| %>
+						<li><%= link_to(h(condition.name), view_condition_path(:slug => condition.slug)) %></li>
+					<% end %>
+				</ul>
+			</li>
+		</ul>
+	</li>
+	<li><%= link_to 'Treatments', treatments_list_path %>
+		<ul>
+			<% @treatment_types.each do |treatment_type| %>
+				<% if treatment_type.has_published_treatments? %>
+					<li><%= h treatment_type.name %>
+						<ul class="non_surgical_treatments">
+							<% treatment_type.published_treatments.each do |treatment| %>
+								<li><%= link_to h(treatment.name), view_treatment_path(:slug => treatment.slug) %></li>
+							<% end %>
+							<% treatment_type.children.each do |child_type| %>
+								<% if child_type.has_published_treatments? %>
+									<li class="sub_section"><%= h child_type.name %>
+										<ul>
+											<% child_type.published_treatments.each do |child_treatment| %>
+												<li><%= link_to h(child_treatment.name), view_treatment_path(:slug => child_treatment.slug) %></li>
+											<% end %>
+										</ul>
+									</li>
+								<% end %>
+							<% end %>
+						</ul>
+					</li>
+				<% end %>
+			<% end %>
+		</ul>
+	</li>
+	<li>
+		Diagnostics
+		<ul>
+			<% @diagnostics.each do |d| %>
+				<li><%= link_to(h(d.name), view_diagnostic_path(:slug => d.slug)) %></li>	
+			<% end %>
+		</ul>		
+	</li>
+	<li><a href="/wellness">Wellness</a></li>
+	<li><a href="/research">Research</a></li>
+	<li><a href="/testimonials">Testimonials</a></li>
+	<li><a href="/ask_the_doctor">Ask the Doctor</a></li>
+	<li><a href="/about_us">About Us</a>
+		<ul class="about_us">
+			<% @about_pages.each do |page| %>
+				<% if page.published? %>
+					<li><%= link_to h(page.name), about_us_page_path(:slug => page.slug) %></li>
+				<% end %>
+			<% end %>
+		</ul>
+	</li>
+	<li><a href="/locations">Locations</a></li>
+	<li><a href="/appointments">Appointments</a></li>
+	<li><a href="/contact_us">Contact Us</a></li>
+	<li><a href="/terms_and_conditions">Terms and Conditions</a></li>
+</ul>

@@ -1,0 +1,18 @@
+<% content_for :head do %>
+	<script src="http://maps.google.com/maps?file=api&amp;v=2.144a&amp;sensor=false&amp;key=<%= CONFIG["maps_api_key"] %>" type="text/javascript"></script>
+	<%= javascript_include_tag "locations" %>
+	<script type="text/javascript">
+	document.observe('dom:loaded', function() {
+		new LocationEditor('map_point_editor', <%= @location.to_json %>, "<%= CONFIG["maps_api_key"] %>");
+		$('location_name').activate();
+	});
+	</script>
+<% end %>
+
+<div id="breadcrumbs">
+	<%= link_to 'Home', admin_path %> &gt; <%= link_to 'Locations', locations_path %> &gt; Add Location
+</div>
+
+<h1>Add Location</h1>
+
+<%= render :partial => 'form' %>

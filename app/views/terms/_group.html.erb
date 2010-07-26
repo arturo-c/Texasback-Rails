@@ -1,0 +1,7 @@
+<% if group.has_published_terms? %>
+	<h3 id="gr<%= group.id %>"><%= h group.name %></h3>
+
+	<%= render :partial => 'term', :collection => group.published_terms %>
+	
+	<p class="top"><a href="#">Back to top</a></p>
+<% end %>

@@ -1,0 +1,76 @@
+<% content_for :head do %>
+	<script type="text/javascript">
+	document.observe('dom:loaded', function() {
+		new LogoUploader();
+	});
+	
+	var LogoUploader = Class.create({
+		initialize: function() {
+			this.link = $('upload_logo_link');
+			this.choose = $('choose_logo');
+			this.upload = $('upload_logo');
+			
+			this.link.observe('click', this.toggle.bindAsEventListener(this));
+		},
+		
+		toggle: function(event) {
+			if(this.choose.visible()) {
+				this.choose.hide();
+				this.upload.show();
+				this.link.update('choose an existing logo').previous('label').update('Upload a new logo');
+			}
+			else {
+				this.choose.show();
+				this.upload.hide();
+				this.link.update('upload a new logo').previous('label').update('Choose a media logo');
+			}
+			
+			$('media_entry_new_media_logo').value = "";
+			
+			event.stop();
+		}
+	});
+	</script>
+<% end %>
+
+<%= show_errors_for :media_entry %>
+
+<% form_for(@media_entry, :html => { :multipart => true }) do |f| %>
+	<dl class="form">
+		<dt><label for="media_entry_entry_date_2i">Date</label></dt>
+		<dd><%= f.date_select :entry_date, :order => [ :month, :day, :year ] %></dd>
+		
+		<dt><%= f.label :source %></dt>
+		<dd>
+			<%= f.text_field :source, :maxlength => 250, :size => 60 %>
+			<%= f.check_box :italicize_source %> <%= f.label :italicize_source, 'Italics' %>
+		</dd>
+		
+		<dt><%= f.label :article %></dt>
+		<dd>
+			<%= f.text_field :article, :maxlength => 250, :size => 60 %>
+			<%= f.check_box :quote_article %> <%= f.label :quote_article, 'Wrap in quotes' %>
+		</dd>
+		
+		<dt><%= f.label :topic %></dt>
+		<dd><%= f.text_field :topic, :maxlength => 250, :size => 60 %></dd>
+		
+		<dt><%= f.label :summary %></dt>
+		<dd><%= f.text_area :summary, :cols => 60, :rows => 4 %></dd>
+		
+		<dt>
+			<%= f.label :media_logo_id, 'Choose a media logo' %>
+			(or <a href="#" id="upload_logo_link">upload a new logo</a>)
+		</dt>
+		<dd id="choose_logo">			
+			<%= f.select :media_logo_id, @logos.collect { |l| [ l.name, l.id ] }, :include_blank => 'None' %>
+		</dd>
+		<dd id="upload_logo" style="display:none;">
+			<%= f.file_field :new_media_logo %>
+		</dd>
+	</dl>
+
+	<p class="checkbox"><%= f.check_box :active_flag %><%= f.label :active_flag, 'Make this item active' %></p>
+	
+	<p class="submit"><%= f.submit "Save Media Item" %></p>
+<% end %>

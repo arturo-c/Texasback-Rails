@@ -1,0 +1,16 @@
+<div id="breadcrumbs">
+	<%= link_to 'Home', admin_path %> &gt; <%= link_to 'Events', events_path %> &gt; <%= link_to h(@event.name), edit_event_path(@event) %> &gt; <%= link_to 'Add/Edit Image Attachments', event_images_path(@event) %> &gt; Edit Image
+</div>
+
+<h1>Edit <%= h @event.name %> Image</h1>
+
+<%= show_errors_for :image %>
+
+<% form_for @image, :url => event_image_path(@event, @image) do |f| %>
+	<dl class="form">
+		<dt><%= f.label :caption, 'Caption' %> (shown for users without images enabled)</dt>
+		<dd><%= f.text_field :caption, :size => 60, :maxlength => 250 %></dd>
+	</dl>
+
+	<p><%= f.submit 'Save' %>	or <%= link_to "Cancel", event_images_path(@event) %></p>
+<% end %>
